@@ -5,8 +5,8 @@
 </template>
 
 <script setup>
-import "./src/assets/main.css";
-import { Page } from "./src/page/index.ts";
+import "./assets/main.css";
+import { Page } from "./page/index.ts";
 </script>
 
 <style lang="scss" scoped></style>

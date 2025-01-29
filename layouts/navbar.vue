@@ -51,7 +51,7 @@ const toggleBurger = () => {
 <style lang="scss" scoped>
 .v-enter-active,
 .v-leave-active {
-  transition: 1s;
+  transition: 0.5s;
 }
 
 .v-enter-from,
@@ -67,6 +67,7 @@ nav {
   z-index: 10;
   background: var(--white);
   padding: 20px 115px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 
   .logo {
     width: 100%;
@@ -184,7 +185,7 @@ nav {
       }
 
       &:hover::after {
-        width: 30%;
+        width: 50%;
       }
 
       &.active::after {
@@ -199,6 +200,12 @@ nav {
     font-family: "TT Interfaces", sans-serif;
     font-size: 16px;
     color: var(--black);
+  }
+}
+
+@media screen and (max-width: 1650px) {
+  nav {
+    padding: 20px 60px;
   }
 }
 

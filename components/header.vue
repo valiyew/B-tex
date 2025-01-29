@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="overlay"></div>
-    <!-- <div class="header-title">
+    <div class="header-title">
       <div class="vector-box">
         <div class="vector vector1"></div>
         <div class="vector vector2"></div>
@@ -22,7 +22,7 @@
           <i class="fa-solid fa-arrow-right"></i>
         </button>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -34,7 +34,7 @@
   height: 100vh;
   position: relative;
   z-index: 3;
-  background-image: url("/assets/heroImg.jpeg");
+  background-image: url("/assets/heroImg.png");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -99,7 +99,7 @@
       h1 {
         width: 65%;
         font-family: "Prosto One", sans-serif;
-        font-size: 56px;
+        font-size: 54px;
         font-weight: 400;
         line-height: 67.2px;
         text-align: left;
@@ -109,7 +109,7 @@
       p {
         margin-top: 15px;
         width: 50%;
-        font-family: "Golos Text";
+        font-family: "Golos Text", sans-serif;
         font-size: 18px;
         line-height: 25.2px;
         color: var(--p-color);
@@ -135,6 +135,141 @@
         span {
           margin: 0px 15px;
           border: 1px solid;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1650px) {
+  .header {
+    padding: 0px 60px;
+    .header-title {
+      .title {
+        h1 {
+          width: 70%;
+          font-size: 52px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1450px) {
+  .header {
+    .header-title {
+      .title {
+        h1 {
+          width: 75%;
+          font-size: 52px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .header {
+    .header-title {
+      .title {
+        h1 {
+          width: 85%;
+          font-size: 52px;
+        }
+        p {
+          width: 80%;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .header {
+    padding: 0px 50px;
+    .header-title {
+      .title {
+        h1 {
+          width: 100%;
+          font-size: 48px;
+        }
+        p {
+          width: 90%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .header {
+    .header-title {
+      .title {
+        h1 {
+          width: 100%;
+          font-size: 42px;
+        }
+        p {
+          width: 90%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 776px) {
+  .header {
+    .header-title {
+      .title {
+        h1 {
+          width: 100%;
+          font-size: 32px;
+          line-height: 50px;
+        }
+        p {
+          margin-top: 5px;
+          width: 100%;
+          font-size: 14px;
+        }
+
+        button {
+          margin-top: 20px;
+          padding: 12px 28px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .header {
+    padding: 0px 30px;
+    .header-title {
+      .title {
+        h1 {
+          font-size: 26px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 376px) {
+  .header {
+    .header-title {
+      .title {
+        h1 {
+          font-size: 18px;
+          line-height: 30px;
+        }
+        p {
+          font-size: 12px;
+        }
+
+        button {
+          font-size: 12px;
         }
       }
     }

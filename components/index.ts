@@ -1,2 +1,4 @@
 export { default as Header } from "./header.vue";
 export { default as AboutCompany } from "./aboutCompany.vue";
+export { default as WeProduce } from "./weProduce.vue";
+export { default as Product } from "./product.vue";

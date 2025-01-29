@@ -1,5 +1,6 @@
 <template>
-  <div class="header">
+  <div class="header" :style="{ backgroundImage: `url(${bannerImage})` }">
+    >
     <div class="overlay"></div>
     <div class="header-title">
       <div class="vector-box">
@@ -8,9 +9,7 @@
         <div class="vector vector3"></div>
       </div>
       <div class="title">
-        <h1>
-          Biz sifatli qurilish materiallari va uskunalarini yetkazib beramiz
-        </h1>
+        <h1>{{ bannerTitle }}</h1>
         <p>
           Молодое и динамично развивающееся предприятие специализируется на
           производстве алюминиевых профилей различных типов и размеров.
@@ -26,7 +25,31 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, onMounted } from "vue";
+import { useBanner } from "../services/banner/banner-service";
+
+const { getBanner } = useBanner();
+const bannerTitle = ref("");
+const bannerImage = ref("");
+
+const { data: banner } = await useAsyncData("banner", async () => {
+  const response = await getBanner();
+
+  if (!response || !response.results || response.results.length === 0) {
+    return null;
+  }
+
+  return response.results;
+});
+
+onMounted(() => {
+  if (banner.value && banner.value.length > 0) {
+    bannerTitle.value = banner.value[0].title;
+    bannerImage.value = banner.value[0].image;
+  }
+});
+</script>
 
 <style lang="scss" scoped>
 .header {
@@ -34,7 +57,6 @@
   height: 100vh;
   position: relative;
   z-index: 3;
-  background-image: url("/assets/heroImg.png");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -71,7 +93,7 @@
 
     .vector-box {
       position: absolute;
-      bottom: 0;
+      bottom: 19px;
       display: flex;
       gap: 5px;
       .vector {

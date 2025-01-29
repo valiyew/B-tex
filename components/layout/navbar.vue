@@ -136,18 +136,18 @@ nav {
 }
 .main-burger {
   display: none;
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   height: 100%;
   width: 60%;
   background: var(--white);
-  z-index: 11;
+  z-index: 20;
   padding: 20px;
 
   i {
     position: absolute;
-    top: 10px;
+    top: 20px;
     left: 20px;
     font-size: 24px;
     color: var(--primary);

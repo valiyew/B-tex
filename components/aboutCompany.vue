@@ -39,7 +39,7 @@
 .about-company {
   width: 100%;
   height: auto;
-  padding: 110px 115px;
+  padding: 110px 115px 0px 115px;
 
   .company-title {
     display: flex;
@@ -180,7 +180,6 @@
 
 @media screen and (max-width: 376px) {
   .about-company {
-    padding: 90px 30px;
     .company-title {
       gap: 50px;
       .left-box {

@@ -4,4 +4,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   css: ["@fortawesome/fontawesome-free/css/all.min.css"],
+
+  runtimeConfig: {
+    public: {
+      BaseUrl: process.env.PUBLIC_BASE_URL,
+    },
+  },
 });

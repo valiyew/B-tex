@@ -35,14 +35,40 @@
         <i class="fa-brands fa-telegram"></i>
       </div>
     </div>
-
-    <div class="footer-section">
-      <p>Авторское право © 2025. Все права защищены.</p>
-      <div class="logo">
-        <p>Designed by</p>
-      </div>
-    </div>
   </footer>
+  <div class="more-contact">
+    <ul class="about-us">
+      <li class="title">About us</li>
+      <li class="bold-title">
+        Надежность и точность в каждом движении станка 
+      </li>
+      <li>
+        Доверьтесь нам в выборе оборудования для вашего бизнеса — мы обеспечим
+        вам безупречную работу и высокую производительность на каждом этапе
+        производства.
+      </li>
+    </ul>
+
+    <ul class="shop-service">
+      <li class="title">Shop services</li>
+      <li>Фасадные профили</li>
+      <li>Террасные доски и покрытия</li>
+      <li>Экструзионное оборудование</li>
+      <li>Металлообрабатывающее оборудование</li>
+      <li>Запасные части и комплектующие</li>
+    </ul>
+
+    <ul class="address">
+      <li class="title">Address</li>
+      <li class="bold-title">Фишелн 50, 41366 Швальмталь, Германия</li>
+      <li class="bold-title">49 0 173 277 34 79</li>
+      <li>Mo-Fr, 09:00 - 16:00 Uhr</li>
+    </ul>
+  </div>
+
+  <div class="footer-section">
+    <p>Авторское право © 2025. Все права защищены.</p>
+  </div>
 </template>
 
 <script setup></script>
@@ -157,19 +183,57 @@ footer {
       }
     }
   }
+}
 
-  .footer-section {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.more-contact {
+  width: 100%;
+  background: var(--white);
+  padding: 50px 240px;
+  display: flex;
+  justify-content: space-between;
+  gap: 100px;
+
+  ul {
+    list-style: none;
     width: 100%;
-    border-top: 1px solid #c2c2c3;
-    padding: 44px 140px;
-    p {
-      font-family: "TT Interfaces", sans-serif;
-      font-size: 16px;
-      color: var(--black);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .title {
+      color: var(--primary);
+      font-family: "Prosto One", sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 120%;
     }
+
+    .bold-title {
+      font-size: 24px;
+    }
+
+    li {
+      color: var(--black);
+      font-family: "Golos Text", sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 150%;
+    }
+  }
+}
+
+.footer-section {
+  text-align: center;
+  width: 100%;
+  border-top: 1px solid #c2c2c3;
+  padding: 44px 140px;
+  background: var(--white);
+
+  p {
+    font-family: "TT Interfaces", sans-serif;
+    font-size: 16px;
+    color: var(--black);
   }
 }
 
@@ -182,6 +246,9 @@ footer {
 @media screen and (max-width: 1350px) {
   footer {
     padding: 0px 50px;
+  }
+  .more-contact {
+    padding: 50px 140px;
   }
 }
 
@@ -218,6 +285,18 @@ footer {
       }
     }
   }
+
+  .more-contact {
+    padding: 50px 140px;
+    flex-direction: column;
+    gap: 50px;
+    ul {
+      text-align: center;
+      .bold-title {
+        font-size: 20px;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 776px) {
@@ -251,6 +330,10 @@ footer {
     .footer-section {
       padding: 30px 80px;
     }
+  }
+
+  .more-contact {
+    padding: 40px 80px;
   }
 }
 
@@ -291,6 +374,10 @@ footer {
         font-size: 12px;
       }
     }
+  }
+
+  .more-contact {
+    padding: 40px 30px;
   }
 }
 

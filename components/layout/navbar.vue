@@ -1,10 +1,7 @@
 <template>
   <nav>
     <div class="logo">
-      <p>
-        B-TEX GmbH & Co.KG <br />
-        B-TEX GmbH & Co.KG
-      </p>
+      <img src="/assets/navbarLogo.png" alt="" />
       <span>|</span>
       <div class="mains">
         <ul>
@@ -73,6 +70,10 @@ nav {
     width: 100%;
     display: flex;
     align-items: center;
+
+    img {
+      width: 190px;
+    }
 
     p {
       margin-right: 20px;

@@ -1,8 +1,22 @@
 <template>
   <div class="product">
     <h1>Product</h1>
+    <div class="categories">
+      <button
+        v-for="(item, index) in categories"
+        :key="index"
+        @click="isActiveToggle(item.id)"
+        :class="{ active: isActive === item.id }"
+      >
+        {{ item.title }}
+      </button>
+    </div>
     <div class="product-box">
-      <div v-for="(item, index) in product" :key="index" class="product-item">
+      <div
+        v-for="(item, index) in productsList"
+        :key="index"
+        class="product-item"
+      >
         <img :src="item.image" alt="Product Image" />
         <p>{{ item.description }}</p>
       </div>
@@ -12,18 +26,26 @@
 
 <script setup>
 import { useProduct } from "../services/product/product-service";
+import { onMounted } from "vue";
 
 const { getProduct } = useProduct();
 
-const { data: product } = await useAsyncData("product", async () => {
+const productsList = ref([]);
+const categories = ref([]);
+const isActive = ref(1);
+
+onMounted(async () => {
   const response = await getProduct();
 
-  if (!response || !response.results || response.results.length === 0) {
-    return [];
+  if (response?.results?.length) {
+    categories.value = response.results;
+    productsList.value = response.results.flatMap((item) => item.products);
   }
-
-  return response.results.flatMap((item) => item.products);
 });
+
+const isActiveToggle = (id) => {
+  isActive.value = id;
+};
 </script>
 
 <style lang="scss" scoped>
@@ -35,6 +57,39 @@ const { data: product } = await useAsyncData("product", async () => {
     font-family: "Nekst", sans-serif;
     font-size: 42px;
     font-style: normal;
+  }
+
+  .categories {
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+
+    .active {
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    button {
+      cursor: pointer;
+      width: auto;
+      padding: 16px 24px;
+      color: var(--black);
+      font-family: "Golos Text", sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+      border-radius: 50px;
+      background: none;
+      border: 2px solid #ebebeb;
+      transition: 0.3s;
+
+      &:hover {
+        border: 2px solid var(--primary);
+        color: var(--primary);
+      }
+    }
   }
 
   .product-box {

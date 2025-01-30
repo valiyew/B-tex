@@ -74,6 +74,13 @@ const { data: product } = await useAsyncData("product", async () => {
 @media screen and (max-width: 1150px) {
   .product {
     padding: 0px 50px;
+    .product-box {
+      .product-item {
+        p {
+          font-size: 16px;
+        }
+      }
+    }
   }
 }
 
@@ -95,7 +102,7 @@ const { data: product } = await useAsyncData("product", async () => {
       grid-template-columns: repeat(1, 1fr);
       .product-item {
         p {
-          font-size: 16px;
+          font-size: 14px;
         }
       }
     }

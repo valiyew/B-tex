@@ -209,12 +209,6 @@ nav {
   }
 }
 
-@media screen and (max-width: 1450px) {
-  nav {
-    padding: 20px 60px;
-  }
-}
-
 @media screen and (max-width: 1150px) {
   nav {
     padding: 20px 50px;

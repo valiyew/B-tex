@@ -11,6 +11,7 @@
     <button @click="next" class="carousel-control next">
       <i class="fa-solid fa-chevron-right"></i>
     </button>
+    <h3>sifatli qurilish materiallari</h3>
   </div>
 </template>
 
@@ -100,17 +101,37 @@ const prev = () => {
     right: 15%;
     color: var(--white);
   }
+
+  h3 {
+    width: 100%;
+    position: absolute;
+    bottom: 5%;
+    left: 15%;
+    color: var(--white);
+    font-family: "Prosto One", sans-serif;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 120%;
+    text-transform: uppercase;
+  }
 }
 
 @media screen and (max-width: 1650px) {
   .carousel {
     padding: 120px 60px;
+    h3 {
+      bottom: 18%;
+    }
   }
 }
 
 @media screen and (max-width: 1150px) {
   .carousel {
     padding: 20px 50px;
+    h3 {
+      font-size: 32px;
+      bottom: 10%;
+    }
   }
 }
 
@@ -123,6 +144,14 @@ const prev = () => {
           height: 500px;
         }
       }
+    }
+  }
+}
+
+@media screen and (max-width: 776px) {
+  .carousel {
+    h3 {
+      font-size: 22px;
     }
   }
 }

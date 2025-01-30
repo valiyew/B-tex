@@ -2,18 +2,18 @@
   <div class="product">
     <h1>Product</h1>
     <div class="categories">
-      <button
+      <!-- <button
         v-for="(item, index) in categories"
         :key="index"
         @click="isActiveToggle(item.id)"
         :class="{ active: isActive === item.id }"
       >
         {{ item.title }}
-      </button>
+      </button> -->
     </div>
     <div class="product-box">
       <div
-        v-for="(item, index) in productsList"
+        v-for="(item, index) in filteredProducts"
         :key="index"
         class="product-item"
       >
@@ -25,22 +25,35 @@
 </template>
 
 <script setup>
+import { ref, computed, onMounted } from "vue";
 import { useProduct } from "../services/product/product-service";
-import { onMounted } from "vue";
 
 const { getProduct } = useProduct();
 
 const productsList = ref([]);
 const categories = ref([]);
-const isActive = ref(1);
+const isActive = ref(null);
 
 onMounted(async () => {
   const response = await getProduct();
 
   if (response?.results?.length) {
     categories.value = response.results;
-    productsList.value = response.results.flatMap((item) => item.products);
+    productsList.value = response.results.flatMap((item) =>
+      item.products.map((product) => ({
+        ...product,
+        category: item.id,
+      }))
+    );
+
+    isActive.value = categories.value[0]?.id || null;
   }
+});
+
+const filteredProducts = computed(() => {
+  return productsList.value.filter(
+    (product) => product.category === isActive.value
+  );
 });
 
 const isActiveToggle = (id) => {

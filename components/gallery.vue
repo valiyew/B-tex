@@ -37,22 +37,22 @@ const { data: media } = await useAsyncData("slider", async () => {
 });
 
 const scrollContainer = ref(null);
-const imgWidth = ref(580); // Default width
+const imgWidth = ref(580);
 
-// Rasm o'lchamini ekranga qarab dinamik aniqlash
 const updateImageWidth = () => {
   if (window.innerWidth <= 576) {
-    imgWidth.value = 680;
-  } else if (window.innerWidth <= 768) {
-    imgWidth.value = 450;
+    imgWidth.value = 570;
+  } else if (window.innerWidth <= 776) {
+    imgWidth.value = 780;
   } else if (window.innerWidth <= 992) {
     imgWidth.value = 490;
+  } else if (window.innerWidth <= 1150) {
+    imgWidth.value = 580;
   } else {
     imgWidth.value = 580;
   }
 };
 
-// Tugmalar bosilganda scrollContainer scrollLeft ni rasm kengligi bilan tenglashtirish
 const next = () => {
   if (scrollContainer.value) {
     scrollContainer.value.scrollLeft += imgWidth.value;
@@ -65,9 +65,8 @@ const prev = () => {
   }
 };
 
-// Ekran o'lchami o'zgarsa, imgWidth ni yangilash
 onMounted(() => {
-  updateImageWidth(); // Boshlang‘ich qiymat
+  updateImageWidth();
   window.addEventListener("resize", updateImageWidth);
 });
 </script>
@@ -266,6 +265,20 @@ onMounted(() => {
   }
 }
 
+@media screen and (max-width: 776px) {
+  .gallery {
+    .carousel {
+      .carousel-container {
+        .carousel-item {
+          img {
+            width: 780px;
+          }
+        }
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 676px) {
   .gallery {
     .carousel {
@@ -280,6 +293,19 @@ onMounted(() => {
         .carousel-item {
           img {
             width: 680px;
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 576px) {
+  .gallery {
+    .carousel {
+      .carousel-container {
+        .carousel-item {
+          img {
+            width: 570px;
           }
         }
       }

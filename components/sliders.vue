@@ -53,7 +53,7 @@ const prev = () => {
   position: relative;
   width: 100%;
   overflow: hidden;
-  padding: 100px 115px;
+  padding: 100px 115px 0px 115px;
 
   .carousel-container {
     display: flex;

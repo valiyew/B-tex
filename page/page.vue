@@ -8,7 +8,10 @@
       <Product />
     </div>
     <Sliders />
-    <!-- <Footer /> -->
+    <div class="bg">
+      <Gallery />
+      <Footer />
+    </div>
   </div>
 </template>
 
@@ -20,11 +23,12 @@ import {
   WeProduce,
   Product,
   Sliders,
+  Gallery,
 } from "../components/index";
 </script>
 
 <style lang="scss" scoped>
 .bg {
-  background: var(--Apple-Grey, #f5f5f7);
+  background: #f5f5f7;
 }
 </style>

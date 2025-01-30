@@ -61,7 +61,7 @@ footer {
       font-family: "Nekst", sans-serif;
       font-size: 40px;
       font-weight: 400;
-      line-height: 120%; /* 48px */
+      line-height: 120%;
     }
 
     .input-form {
@@ -78,6 +78,7 @@ footer {
         outline: none;
         border: none;
         border-bottom: 1px solid #c2c2c3;
+        background: none;
       }
     }
     .submit-form {
@@ -122,6 +123,7 @@ footer {
     width: 100%;
     padding: 44px 140px;
     display: flex;
+    gap: 25px;
     justify-content: space-between;
 
     div {
@@ -167,6 +169,136 @@ footer {
       font-family: "TT Interfaces", sans-serif;
       font-size: 16px;
       color: var(--black);
+    }
+  }
+}
+
+@media screen and (max-width: 1550px) {
+  footer {
+    padding: 0px 130px;
+  }
+}
+
+@media screen and (max-width: 1350px) {
+  footer {
+    padding: 0px 50px;
+  }
+}
+
+@media screen and (max-width: 1350px) {
+  footer {
+    padding: 0px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  footer {
+    .footer-form {
+      h1 {
+        font-size: 32px;
+      }
+
+      .input-form {
+        input {
+          font-size: 14px;
+        }
+      }
+
+      .submit-form {
+        button {
+          font-size: 12px;
+        }
+      }
+    }
+    .our-contact {
+      div {
+        h2 {
+          font-size: 22px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 776px) {
+  footer {
+    .input-form,
+    .submit-form {
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .footer-form {
+      padding: 20px 80px;
+      .submit-form {
+        p {
+          width: 100%;
+        }
+        button {
+          font-size: 14px;
+        }
+      }
+    }
+
+    .our-contact {
+      padding: 20px 80px;
+      flex-direction: column;
+      .our-network {
+        flex-direction: row;
+      }
+    }
+
+    .footer-section {
+      padding: 30px 80px;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  footer {
+    .footer-form {
+      padding: 20px 30px;
+      h1 {
+        font-size: 22px;
+      }
+      .submit-form {
+        p {
+          width: 100%;
+        }
+        button {
+          font-size: 14px;
+        }
+      }
+    }
+
+    .our-contact {
+      padding: 20px 30px;
+      div {
+        h2 {
+          font-size: 16px;
+        }
+
+        p {
+          font-size: 12px;
+          margin-top: 10px;
+        }
+      }
+    }
+
+    .footer-section {
+      padding: 30px 30px;
+      p {
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 376px) {
+  footer {
+    .footer-section {
+      flex-direction: column;
+      gap: 10px;
     }
   }
 }

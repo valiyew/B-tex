@@ -1,4 +1,4 @@
-import { useFetch } from "./../composables/useFetch";
+import { useFetch } from "../../composables/useFetch";
 import type { BannerType } from "./banner-service-type";
 
 export const useBanner = () => {

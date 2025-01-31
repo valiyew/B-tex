@@ -1,5 +1,5 @@
 <template>
-  <div id="product"class="product">
+  <div id="product" class="product">
     <h1>Product</h1>
     <div class="categories">
       <button
@@ -67,9 +67,10 @@ const isActiveToggle = (id) => {
   h1 {
     color: var(--black);
     text-align: center;
-    font-family: "Nekst", sans-serif;
+    font-family: "Golos Text";
     font-size: 42px;
     font-style: normal;
+    font-weight: 500;
   }
 
   .categories {
@@ -78,7 +79,11 @@ const isActiveToggle = (id) => {
     display: flex;
     gap: 16px;
     align-items: center;
-    justify-content: space-between;
+    overflow: scroll;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
     .active {
       color: var(--primary);
@@ -86,8 +91,7 @@ const isActiveToggle = (id) => {
     }
 
     button {
-      cursor: pointer;
-      width: auto;
+      width: 100%;
       padding: 16px 24px;
       color: var(--black);
       font-family: "Golos Text", sans-serif;
@@ -95,8 +99,12 @@ const isActiveToggle = (id) => {
       font-weight: 400;
       border-radius: 50px;
       background: none;
+      text-align: center;
+      white-space: nowrap;
+      display: inline-block;
       border: 2px solid #ebebeb;
       transition: 0.3s;
+      cursor: pointer;
 
       &:hover {
         border: 2px solid var(--primary);
@@ -111,6 +119,7 @@ const isActiveToggle = (id) => {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
+    padding-bottom: 70px;
 
     .product-item {
       padding: 20px;

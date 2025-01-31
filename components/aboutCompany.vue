@@ -43,22 +43,22 @@
 
   .company-title {
     display: flex;
+    gap: 30px;
     .left-box {
       width: 55%;
 
       h1 {
         color: var(--black);
-        font-family: "Nekst", sans-serif;
+        font-family: "Golos Text";
         font-size: 42px;
-        font-weight: bold;
+        font-weight: 500;
       }
 
       button {
         margin-top: 48px;
-        font-family: "Prosto One", sans-serif;
+        font-family: "Prosto One";
         padding: 16px 32px;
         font-size: 16px;
-        font-weight: 400;
         background: var(--primary);
         color: var(--white);
         border: none;

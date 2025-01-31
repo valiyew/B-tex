@@ -10,6 +10,7 @@ export namespace SliderType {
         title: {
           en: string;
           ru: string;
+          ge: string;
         };
         order: number;
         active: boolean;

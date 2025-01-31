@@ -1,4 +1,4 @@
-import { useFetch } from "./../composables/useFetch";
+import { useFetch } from "../../composables/useFetch";
 import type { SliderType } from "./slider-service-type";
 
 export const useSlider = () => {

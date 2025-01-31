@@ -1,4 +1,4 @@
-import { useFetch } from "./../composables/useFetch";
+import { useFetch } from "../../composables/useFetch";
 import type { ProductType } from "./product-service-type";
 
 export const useProduct = () => {

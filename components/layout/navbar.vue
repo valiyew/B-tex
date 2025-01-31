@@ -54,7 +54,9 @@
 
   <Transition>
     <div v-if="isOpenBurger" class="main-burger">
-      <i @click="toggleBurger" class="fa-solid fa-xmark"></i>
+      <i @click="toggleBurger" class="fa-solid fa-xmark close"></i>
+      <img src="/assets/navbarLogo.png" alt="" />
+
       <div class="burger-mains">
         <ul>
           <li>Главный</li>
@@ -63,44 +65,52 @@
           <li>Наш галерея</li>
           <li>Контакты</li>
         </ul>
-        <div class="languages">Eng</div>
+        <div @click="toggleActiveLanguage" class="languages">
+          <div class="selected-language">
+            <div class="current-language">
+              <img :src="currentLanguage.icon" alt="" />
+              <p>{{ currentLanguage.value }}</p>
+              <i v-if="isActiveLanguage" class="fa-solid fa-chevron-down"></i>
+              <i v-else class="fa-solid fa-chevron-up"></i>
+            </div>
+
+            <div v-if="isActiveLanguage" class="language-items">
+              <div
+                v-for="item in languages"
+                @click="selectedLanguage(item.value, item.id, item.icon)"
+              >
+                <img
+                  v-if="currentLanguage.id !== item.id"
+                  :src="item.icon"
+                  alt=""
+                />
+                <p v-if="currentLanguage.id !== item.id">{{ item.value }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3>49 0 173 277 34 79</h3>
       </div>
-      <p>Авторское право © 2025. Все права защищены.</p>
     </div>
   </Transition>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { useTranslations } from "@/services/translations/translations-service";
 
+const { getTranslations } = useTranslations();
 const isOpenBurger = ref(false);
+const translate = ref(null);
 const isActiveLanguage = ref(false);
+const all_languages = ref([]);
+
 const currentLanguage = ref({
   value: "Eng",
   id: 1,
   icon: "/_nuxt/assets/engIcon.png",
 });
-
-// const { getTranslations } = useTranslations();
-
-// const { data: translate } = await useAsyncData("translate", async () => {
-//   const response = await getTranslations();
-
-//   // console.log(response);
-
-//   // if (!response || !response.results || response.results.length === 0) {
-//   //   return null;
-//   // }
-
-//   // return response.results;
-// });
-
-// const { data: translate } = await useAsyncData("translations", () => {
-//   getTranslations();
-// });
-
-// console.log(translate)
 
 const toggleBurger = () => {
   isOpenBurger.value = !isOpenBurger.value;
@@ -112,43 +122,45 @@ const toggleActiveLanguage = () => {
 
 const selectedLanguage = (value, id, icon) => {
   currentLanguage.value = { value, id, icon };
-  localStorage.setItem(
-    "current-language",
-    JSON.stringify(currentLanguage.value)
-  );
-  localStorage.setItem("get-language", value);
+
+  if (process.client) {
+    localStorage.setItem(
+      "current-language",
+      JSON.stringify(currentLanguage.value)
+    );
+    localStorage.setItem("get-language", value.toLocaleLowerCase().slice(0, 2));
+  }
 };
 
+watch(currentLanguage, async () => {
+  if (process.client) {
+    const response = await getTranslations();
+    if (response) {
+      translate.value = response;
+    }
+  }
+});
+
 onMounted(() => {
-  const savedLanguage = localStorage.getItem("current-language");
-  if (savedLanguage) {
-    currentLanguage.value = JSON.parse(savedLanguage);
+  if (process.client) {
+    const savedLanguage = localStorage.getItem("current-language");
+    if (savedLanguage) {
+      currentLanguage.value = JSON.parse(savedLanguage);
+    }
   }
 });
 
 const languages = [
-  {
-    id: 1,
-    value: "Eng",
-    key: "en",
-    icon: "/_nuxt/assets/engIcon.png",
-  },
-  {
-    id: 2,
-    value: "Rus",
-    key: "ru",
-    icon: "/_nuxt/assets/rusFlag.png",
-  },
-  {
-    id: 3,
-    value: "Uzb",
-    key: "uz",
-    icon: "/_nuxt/assets/uzbIcon.png",
-  },
+  { id: 1, value: "Eng", key: "en", icon: "/_nuxt/assets/engIcon.png" },
+  { id: 2, value: "Rus", key: "ru", icon: "/_nuxt/assets/rusFlag.png" },
+  { id: 3, value: "Uzb", key: "uz", icon: "/_nuxt/assets/uzbIcon.png" },
 ];
 </script>
 
 <style lang="scss" scoped>
+@import url("https://fonts.googleapis.com/css2?family=GolosText&family=Delicious+Handrawn&family=Golos+Text:wght@400..900&family=JetBrains+Mono:wght@100;200;300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Prosto+One&display=swap");
+
 .v-enter-active,
 .v-leave-active {
   transition: 0.5s;
@@ -175,42 +187,52 @@ nav {
 
   .languages {
     width: 110px;
+    height: auto;
     cursor: pointer;
     padding: 10px;
     border-radius: 5px;
+    margin-top: 10px;
 
     p {
+      margin-bottom: 15px;
       color: var(--black);
-      font-family: "Golos Text", sans-serif;
+      font-family: "Golos Text";
       font-size: 18px;
       font-weight: 500;
     }
 
     i {
+      margin-bottom: 15px;
       display: block;
       font-size: 14px;
       color: var(--black);
     }
 
     img {
+      margin-bottom: 15px;
       width: 20px;
       height: 15px;
     }
 
     .current-language {
+      padding-left: 20px;
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
     .language-items {
+      padding-left: 20px;
       position: absolute;
       display: flex;
-      gap: 10px;
       flex-direction: column;
+      width: 125px;
+      border-radius: 5px;
+      background: var(--white);
 
       div {
         display: flex;
+        align-items: center;
         gap: 10px;
       }
     }
@@ -245,7 +267,7 @@ nav {
         list-style: none;
 
         li {
-          font-family: "Golos Text", sans-serif;
+          font-family: "Golos Text";
           font-size: 18px;
           font-weight: 500;
           line-height: 25.2px;
@@ -295,18 +317,43 @@ nav {
   background: var(--white);
   z-index: 20;
   padding: 20px;
+  overflow: scroll;
 
-  i {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .burger-mains {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 70%;
+  }
+
+  h3 {
+    margin-left: 20px;
+    color: var(--black);
+    font-family: "Prosto One", sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+  img {
+    margin-top: 25px;
+    width: 190px;
+  }
+
+  .close {
     position: absolute;
     top: 20px;
-    left: 20px;
+    left: 30px;
     font-size: 24px;
     color: var(--primary);
     cursor: pointer;
   }
 
   ul {
-    margin: 50px 0px 20px 0px;
+    margin: 30px 0px 30px 20px;
     list-style: none;
     display: flex;
     flex-direction: column;
@@ -314,7 +361,7 @@ nav {
     list-style: none;
 
     li {
-      font-family: "Golos Text", sans-serif;
+      font-family: "Golos Text";
       font-size: 18px;
       font-weight: 500;
       line-height: 25.2px;
@@ -345,12 +392,48 @@ nav {
     }
   }
 
-  p {
-    position: absolute;
-    bottom: 10px;
-    font-family: "TT Interfaces", sans-serif;
-    font-size: 16px;
-    color: var(--black);
+  .languages {
+    width: 110px;
+    height: 100%;
+    cursor: pointer;
+    margin-left: 20px;
+    border-radius: 5px;
+
+    p {
+      margin-top: 21px;
+      color: var(--black);
+      font-family: "Golos Text";
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    i {
+      margin-top: 21px;
+      display: block;
+      font-size: 14px;
+      color: var(--black);
+    }
+
+    img {
+      width: 20px;
+      height: 15px;
+    }
+
+    .current-language {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-items {
+      display: flex;
+      flex-direction: column;
+
+      div {
+        display: flex;
+        gap: 10px;
+      }
+    }
   }
 }
 

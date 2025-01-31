@@ -210,6 +210,7 @@ footer {
     }
 
     .bold-title {
+      font-family: "Prosto One";
       font-size: 24px;
     }
 

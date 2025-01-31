@@ -1,5 +1,9 @@
 <template>
-  <div id="header" class="header" :style="{ backgroundImage: `url(${bannerImage})` }">
+  <div
+    id="header"
+    class="header"
+    :style="{ backgroundImage: `url(${bannerImage})` }"
+  >
     >
     <div class="overlay"></div>
     <div class="header-title">
@@ -101,22 +105,22 @@ onMounted(() => {
       }
       .vector1 {
         margin-top: 40px;
-        height: 440px;
+        height: 480px;
       }
       .vector2 {
         margin-top: 20px;
-        height: 460px;
+        height: 500px;
       }
 
       .vector3 {
-        height: 480px;
+        height: 520px;
       }
     }
 
     .title {
       padding-left: 45px;
       position: absolute;
-      bottom: 8%;
+      bottom: 13%;
       h1 {
         width: 65%;
         font-family: "Prosto One", sans-serif;
@@ -243,6 +247,7 @@ onMounted(() => {
   .header {
     .header-title {
       .title {
+        bottom: 20%;
         h1 {
           width: 100%;
           font-size: 32px;
@@ -269,6 +274,8 @@ onMounted(() => {
     padding: 0px 30px;
     .header-title {
       .title {
+        bottom: 15%;
+        
         h1 {
           font-size: 26px;
         }

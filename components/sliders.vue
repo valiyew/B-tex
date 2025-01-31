@@ -1,8 +1,9 @@
 <template>
   <div class="carousel">
     <div class="carousel-container" :style="carouselStyle">
-      <div class="carousel-item" v-for="(image, index) in slider" :key="index">
-        <img :src="image.image" alt="" />
+      <div class="carousel-item" v-for="(item, index) in slider" :key="index">
+        <img :src="item.image" alt="" />
+        <h3>{{ item.title.en }}</h3>
       </div>
     </div>
     <button @click="prev" class="carousel-control prev">
@@ -11,7 +12,6 @@
     <button @click="next" class="carousel-control next">
       <i class="fa-solid fa-chevron-right"></i>
     </button>
-    <h3>sifatli qurilish materiallari</h3>
   </div>
 </template>
 
@@ -72,6 +72,19 @@ const prev = () => {
         height: 700px;
         object-fit: cover;
       }
+
+      h3 {
+        width: 800px;
+        position: absolute;
+        bottom: 5%;
+        left: 5%;
+        color: var(--white);
+        font-family: "Prosto One", sans-serif;
+        font-size: 32px;
+        font-weight: 400;
+        line-height: 120%;
+        text-transform: uppercase;
+      }
     }
   }
 
@@ -101,19 +114,6 @@ const prev = () => {
     right: 15%;
     color: var(--white);
   }
-
-  h3 {
-    width: 100%;
-    position: absolute;
-    bottom: 5%;
-    left: 15%;
-    color: var(--white);
-    font-family: "Prosto One", sans-serif;
-    font-size: 40px;
-    font-weight: 400;
-    line-height: 120%;
-    text-transform: uppercase;
-  }
 }
 
 @media screen and (max-width: 1650px) {
@@ -127,21 +127,32 @@ const prev = () => {
 
 @media screen and (max-width: 1150px) {
   .carousel {
-    padding: 20px 50px;
+    padding: 50px;
     h3 {
       font-size: 32px;
       bottom: 10%;
+    }
+
+    .carousel-container {
+      .carousel-item {
+        img {
+          height: 600px;
+        }
+      }
     }
   }
 }
 
 @media screen and (max-width: 992px) {
   .carousel {
-    padding: 20px 50px;
+    padding: 50px 50px;
     .carousel-container {
       .carousel-item {
         img {
           height: 500px;
+        }
+        h3 {
+          width: 600px;
         }
       }
     }
@@ -153,12 +164,27 @@ const prev = () => {
     h3 {
       font-size: 22px;
     }
+    .carousel-container {
+      .carousel-item {
+        h3 {
+          font-size: 22px;
+          width: 70%;
+        }
+      }
+    }
   }
 }
 
 @media screen and (max-width: 576px) {
   .carousel {
     padding: 20px 30px;
+    .carousel-container {
+      .carousel-item {
+        h3 {
+          font-size: 18px;
+        }
+      }
+    }
     .carousel-control {
       width: 50px;
       height: 50px;

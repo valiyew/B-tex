@@ -1,4 +1,4 @@
-import { useFetch } from "./../composables/useFetch";
+import { useFetch } from "../../composables/useFetch";
 
 export const useTranslations = () => {
   const getTranslations = (params: any) => {

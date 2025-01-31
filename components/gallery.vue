@@ -26,7 +26,7 @@ import { useMedia } from "~/services/media/media-service";
 
 const { getMedia } = useMedia();
 
-const { data: media } = await useAsyncData("slider", async () => {
+const { data: media } = await useAsyncData("media", async () => {
   const response = await getMedia();
 
   if (!response || !response.results || response.results.length === 0) {
@@ -82,9 +82,9 @@ onMounted(() => {
     left: 13%;
     text-align: center;
     color: var(--black);
-    font-family: "Nekst", sans-serif;
+    font-family: "Golos Text";
     font-size: 42px;
-    font-weight: bold;
+    font-weight: 500;
     line-height: 120%;
   }
   .carousel {
@@ -164,6 +164,10 @@ onMounted(() => {
 
 @media screen and (max-width: 1550px) {
   .gallery {
+    h1 {
+      position: absolute;
+      top: 8%;
+    }
     .carousel {
       margin-top: 120px;
 
@@ -301,6 +305,9 @@ onMounted(() => {
 }
 @media screen and (max-width: 576px) {
   .gallery {
+    h1 {
+      font-size: 32px;
+    }
     .carousel {
       .carousel-container {
         .carousel-item {
@@ -308,6 +315,11 @@ onMounted(() => {
             width: 570px;
           }
         }
+      }
+
+      .carousel-control {
+        width: 50px;
+        height: 50px;
       }
     }
   }

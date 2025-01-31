@@ -43,9 +43,9 @@ const { data: categories } = await useAsyncData("categories", () =>
   h1 {
     color: var(--black);
     text-align: center;
-    font-family: "Nekst", sans-serif;
+    font-family: "Golos Text";
     font-size: 42px;
-    font-weight: bold;
+    font-weight: 500;
   }
 
   .produce-box {

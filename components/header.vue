@@ -1,5 +1,5 @@
 <template>
-  <div class="header" :style="{ backgroundImage: `url(${bannerImage})` }">
+  <div id="header" class="header" :style="{ backgroundImage: `url(${bannerImage})` }">
     >
     <div class="overlay"></div>
     <div class="header-title">

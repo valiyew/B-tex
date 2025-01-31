@@ -1,5 +1,5 @@
 <template>
-  <footer>
+  <footer id="footer">
     <div class="footer-form">
       <h1>Мы готовы ответить на все вопросы</h1>
       <form action="">

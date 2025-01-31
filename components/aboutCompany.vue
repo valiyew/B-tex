@@ -1,5 +1,5 @@
 <template>
-  <div class="about-company">
+  <div id="about" class="about-company">
     <div class="company-title">
       <div class="left-box">
         <h1>Информация о нашей компании</h1>

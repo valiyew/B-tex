@@ -1,5 +1,5 @@
 <template>
-  <div class="gallery">
+  <div id="gallery" class="gallery">
     <h1>Наш галерея</h1>
     <div class="carousel">
       <img class="top-ellipse" src="/assets/Ellipse.png" alt="" />

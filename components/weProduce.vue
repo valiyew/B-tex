@@ -18,7 +18,9 @@
               {{ item.title }}
             </h3>
           </div>
-          <p>{{ item.description }}</p>
+          <div>
+            <p v-html="item.description"></p>
+          </div>
         </div>
         <img :src="item.image" alt="have a image" />
       </div>
@@ -78,14 +80,16 @@ const { data: categories } = await useAsyncData("categories", () =>
           text-transform: uppercase;
         }
 
-        p {
-          margin-top: 24px;
-          color: var(--black-light);
-          font-family: "Golos Text", sans-serif;
-          font-size: 20px;
-          font-style: normal;
-          font-weight: 400;
-          line-height: 140%;
+        div {
+          p {
+            margin-top: 24px;
+            color: var(--black-light);
+            font-family: "Golos Text", sans-serif;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 140%;
+          }
         }
       }
 

@@ -12,3 +12,7 @@
   --p-color: #9a999b;
   --black-light: #363636;
 }
+
+html{
+  scroll-behavior: smooth;
+}

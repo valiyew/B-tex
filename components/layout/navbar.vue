@@ -5,11 +5,21 @@
       <span>|</span>
       <div class="mains">
         <ul>
-          <li>Главный</li>
-          <li>О нас</li>
-          <li>Продукция</li>
-          <li>Наш галерея</li>
-          <li>Контакты</li>
+          <a href="#header">
+            <li>Главный</li>
+          </a>
+          <a href="#about">
+            <li>О нас</li>
+          </a>
+          <a href="#product">
+            <li>Продукция</li>
+          </a>
+          <a href="#gallery">
+            <li>Наш галерея</li>
+          </a>
+          <a href="#footer">
+            <li>Контакты</li>
+          </a>
         </ul>
       </div>
     </div>
@@ -76,8 +86,8 @@ const { getTranslations } = useTranslations();
 
 const { data: translate } = await useAsyncData("translate", async () => {
   const response = await getTranslations();
-  
-  console.log(response)
+
+  console.log(response);
 
   // if (!response || !response.results || response.results.length === 0) {
   //   return null;
@@ -158,6 +168,10 @@ nav {
   background: var(--white);
   padding: 20px 115px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+  a {
+    text-decoration: none;
+  }
 
   .languages {
     width: 110px;

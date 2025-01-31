@@ -82,19 +82,19 @@ const currentLanguage = ref({
   icon: "/_nuxt/assets/engIcon.png",
 });
 
-const { getTranslations } = useTranslations();
+// const { getTranslations } = useTranslations();
 
-const { data: translate } = await useAsyncData("translate", async () => {
-  const response = await getTranslations();
+// const { data: translate } = await useAsyncData("translate", async () => {
+//   const response = await getTranslations();
 
-  console.log(response);
+//   // console.log(response);
 
-  // if (!response || !response.results || response.results.length === 0) {
-  //   return null;
-  // }
+//   // if (!response || !response.results || response.results.length === 0) {
+//   //   return null;
+//   // }
 
-  // return response.results;
-});
+//   // return response.results;
+// });
 
 // const { data: translate } = await useAsyncData("translations", () => {
 //   getTranslations();

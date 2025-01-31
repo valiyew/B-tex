@@ -2,14 +2,14 @@
   <div class="product">
     <h1>Product</h1>
     <div class="categories">
-      <!-- <button
+      <button
         v-for="(item, index) in categories"
         :key="index"
         @click="isActiveToggle(item.id)"
         :class="{ active: isActive === item.id }"
       >
         {{ item.title }}
-      </button> -->
+      </button>
     </div>
     <div class="product-box">
       <div

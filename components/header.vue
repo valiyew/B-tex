@@ -62,7 +62,6 @@ onMounted(() => {
   background-attachment: fixed;
   background-repeat: no-repeat;
   padding: 0px 115px;
-  position: relative;
 
   .overlay {
     position: absolute;

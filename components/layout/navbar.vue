@@ -13,7 +13,32 @@
         </ul>
       </div>
     </div>
-    <div class="languages">Eng</div>
+
+    <div @click="toggleActiveLanguage" class="languages">
+      <div class="selected-language">
+        <div class="current-language">
+          <img :src="currentLanguage.icon" alt="" />
+          <p>{{ currentLanguage.value }}</p>
+          <i v-if="isActiveLanguage" class="fa-solid fa-chevron-down"></i>
+          <i v-else class="fa-solid fa-chevron-up"></i>
+        </div>
+
+        <div v-if="isActiveLanguage" class="language-items">
+          <div
+            v-for="item in languages"
+            @click="selectedLanguage(item.value, item.id, item.icon)"
+          >
+            <img
+              v-if="currentLanguage.id !== item.id"
+              :src="item.icon"
+              alt=""
+            />
+            <p v-if="currentLanguage.id !== item.id">{{ item.value }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <i @click="toggleBurger" class="fa-solid fa-bars"></i>
   </nav>
 
@@ -36,13 +61,81 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useTranslations } from "@/services/translations/translations-service";
 
 const isOpenBurger = ref(false);
+const isActiveLanguage = ref(false);
+const currentLanguage = ref({
+  value: "Eng",
+  id: 1,
+  icon: "/_nuxt/assets/engIcon.png",
+});
+
+const { getTranslations } = useTranslations();
+
+const { data: translate } = await useAsyncData("translate", async () => {
+  const response = await getTranslations();
+  
+  console.log(response)
+
+  // if (!response || !response.results || response.results.length === 0) {
+  //   return null;
+  // }
+
+  // return response.results;
+});
+
+// const { data: translate } = await useAsyncData("translations", () => {
+//   getTranslations();
+// });
+
+// console.log(translate)
 
 const toggleBurger = () => {
   isOpenBurger.value = !isOpenBurger.value;
 };
+
+const toggleActiveLanguage = () => {
+  isActiveLanguage.value = !isActiveLanguage.value;
+};
+
+const selectedLanguage = (value, id, icon) => {
+  currentLanguage.value = { value, id, icon };
+  localStorage.setItem(
+    "current-language",
+    JSON.stringify(currentLanguage.value)
+  );
+  localStorage.setItem("get-language", value);
+};
+
+onMounted(() => {
+  const savedLanguage = localStorage.getItem("current-language");
+  if (savedLanguage) {
+    currentLanguage.value = JSON.parse(savedLanguage);
+  }
+});
+
+const languages = [
+  {
+    id: 1,
+    value: "Eng",
+    key: "en",
+    icon: "/_nuxt/assets/engIcon.png",
+  },
+  {
+    id: 2,
+    value: "Rus",
+    key: "ru",
+    icon: "/_nuxt/assets/rusFlag.png",
+  },
+  {
+    id: 3,
+    value: "Uzb",
+    key: "uz",
+    icon: "/_nuxt/assets/uzbIcon.png",
+  },
+];
 </script>
 
 <style lang="scss" scoped>
@@ -65,6 +158,49 @@ nav {
   background: var(--white);
   padding: 20px 115px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+  .languages {
+    width: 110px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+
+    p {
+      color: var(--black);
+      font-family: "Golos Text", sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    i {
+      display: block;
+      font-size: 14px;
+      color: var(--black);
+    }
+
+    img {
+      width: 20px;
+      height: 15px;
+    }
+
+    .current-language {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-items {
+      position: absolute;
+      display: flex;
+      gap: 10px;
+      flex-direction: column;
+
+      div {
+        display: flex;
+        gap: 10px;
+      }
+    }
+  }
 
   .logo {
     width: 100%;

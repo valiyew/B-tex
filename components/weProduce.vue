@@ -65,6 +65,11 @@ const { data: categories } = await useAsyncData("categories", () =>
       justify-content: space-between;
 
       .item-title {
+        overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
         h3 {
           color: var(--black);
           font-family: "Prosto One", sans-serif;

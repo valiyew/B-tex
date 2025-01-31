@@ -2,30 +2,19 @@
   <div id="about" class="about-company">
     <div class="company-title">
       <div class="left-box">
-        <h1>Информация о нашей компании</h1>
+        <h1>{{ aboutCompanyTranslations["about-company.title"] }}</h1>
         <button>
-          Обратный связь
+          {{ aboutCompanyTranslations["section.feedback"] }}
           <span></span>
           <i class="fa-solid fa-arrow-right"></i>
         </button>
       </div>
       <div class="right-box">
         <h5>
-          Компания B-TEX GmbH & Co. KG — это современное и перспективное
-          предприятие, специализирующееся на поставках качественных строительных
-          материалов и оборудования. Мы предлагаем нашим клиентам широкий
-          ассортимент фасадных профилей, террасных досок и покрытий. Кроме того,
-          мы занимаемся поставкой экструзионного и металлообрабатывающего
-          оборудования, а также запасных частей для различных производственных
-          нужд. Эти решения обеспечивают нашим клиентам высокую
-          производительность и точность в их работе
+          {{ aboutCompanyTranslations["about-company.description-title"] }}
         </h5>
         <p>
-          Наши партнеры — это как крупные строительные компании, так и частные
-          клиенты, которым мы предоставляем индивидуальные решения для улучшения
-          и модернизации их объектов. Мы гарантируем высокое качество своей
-          продукции, надежность поставок и профессиональный сервис на каждом
-          этапе сотрудничества
+          {{ aboutCompanyTranslations["about-company.description"] }}
         </p>
       </div>
     </div>
@@ -33,7 +22,38 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, watch } from "vue";
+import { useTranslations } from "~/services/translations/translations-service";
+
+const { getTranslations } = useTranslations();
+const aboutCompanyTranslations = ref({});
+
+const { data: description } = await useAsyncData("description", async () => {
+  const response = await getTranslations();
+  aboutCompanyTranslations.value = response;
+
+  if (!response || !response.results || response.results.length === 0) {
+    return null;
+  }
+
+  return response;
+});
+
+const props = defineProps({
+  propVal: Boolean,
+});
+
+const emit = defineEmits();
+
+watch(
+  () => props.propVal,
+  async (newVal) => {
+    const translations = await getTranslations();
+    aboutCompanyTranslations.value = translations;
+  }
+);
+</script>
 
 <style lang="scss" scoped>
 .about-company {

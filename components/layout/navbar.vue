@@ -5,35 +5,35 @@
       <span>|</span>
       <div class="mains">
         <ul>
-          <a href="#header">
-            <li>Главный</li>
+          <a href="#header" v-if="isTranslationsAvailable">
+            <li>{{ all_languages["navbar.home"] }}</li>
           </a>
-          <a href="#about">
-            <li>О нас</li>
+          <a href="#about" v-if="isTranslationsAvailable">
+            <li>{{ all_languages["navbar.about"] }}</li>
           </a>
-          <a href="#product">
-            <li>Продукция</li>
+          <a href="#product" v-if="isTranslationsAvailable">
+            <li>{{ all_languages["navbar.product"] }}</li>
           </a>
-          <a href="#gallery">
-            <li>Наш галерея</li>
+          <a href="#gallery" v-if="isTranslationsAvailable">
+            <li>{{ all_languages["navbar.gallery"] }}</li>
           </a>
-          <a href="#footer">
-            <li>Контакты</li>
+          <a href="#footer" v-if="isTranslationsAvailable">
+            <li>{{ all_languages["navbar.contact"] }}</li>
           </a>
         </ul>
       </div>
     </div>
 
-    <div @click="toggleActiveLanguage" class="languages">
+    <div @click="changeValue" class="languages">
       <div class="selected-language">
         <div class="current-language">
           <img :src="currentLanguage.icon" alt="" />
           <p>{{ currentLanguage.value }}</p>
-          <i v-if="isActiveLanguage" class="fa-solid fa-chevron-down"></i>
+          <i v-if="isCurrentLanguage" class="fa-solid fa-chevron-down"></i>
           <i v-else class="fa-solid fa-chevron-up"></i>
         </div>
 
-        <div v-if="isActiveLanguage" class="language-items">
+        <div v-if="isCurrentLanguage" class="language-items">
           <div
             v-for="item in languages"
             @click="selectedLanguage(item.value, item.id, item.icon)"
@@ -59,22 +59,32 @@
 
       <div class="burger-mains">
         <ul>
-          <li>Главный</li>
-          <li>О нас</li>
-          <li>Продукция</li>
-          <li>Наш галерея</li>
-          <li>Контакты</li>
+          <a href="#header">
+            <li>{{ all_languages["navbar.home"] }}</li>
+          </a>
+          <a href="#about">
+            <li>{{ all_languages["navbar.about"] }}</li>
+          </a>
+          <a href="#product">
+            <li>{{ all_languages["navbar.product"] }}</li>
+          </a>
+          <a href="#gallery">
+            <li>{{ all_languages["navbar.gallery"] }}</li>
+          </a>
+          <a href="#footer">
+            <li>{{ all_languages["navbar.contact"] }}</li>
+          </a>
         </ul>
-        <div @click="toggleActiveLanguage" class="languages">
+        <div @click="changeValue" class="languages">
           <div class="selected-language">
             <div class="current-language">
               <img :src="currentLanguage.icon" alt="" />
               <p>{{ currentLanguage.value }}</p>
-              <i v-if="isActiveLanguage" class="fa-solid fa-chevron-down"></i>
+              <i v-if="isCurrentLanguage" class="fa-solid fa-chevron-down"></i>
               <i v-else class="fa-solid fa-chevron-up"></i>
             </div>
 
-            <div v-if="isActiveLanguage" class="language-items">
+            <div v-if="isCurrentLanguage" class="language-items">
               <div
                 v-for="item in languages"
                 @click="selectedLanguage(item.value, item.id, item.icon)"
@@ -90,21 +100,22 @@
           </div>
         </div>
 
-        <h3>49 0 173 277 34 79</h3>
+        <h3>{{ all_languages["navbar.telNumber"] }}</h3>
       </div>
     </div>
   </Transition>
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, defineProps, defineEmits } from "vue";
 import { useTranslations } from "@/services/translations/translations-service";
 
 const { getTranslations } = useTranslations();
 const isOpenBurger = ref(false);
 const translate = ref(null);
-const isActiveLanguage = ref(false);
-const all_languages = ref([]);
+const isCurrentLanguage = ref(false);
+const all_languages = ref();
+const isTranslationsAvailable = ref(false);
 
 const currentLanguage = ref({
   value: "Eng",
@@ -112,12 +123,19 @@ const currentLanguage = ref({
   icon: "/_nuxt/assets/engIcon.png",
 });
 
-const toggleBurger = () => {
-  isOpenBurger.value = !isOpenBurger.value;
+const props = defineProps({
+  propVal: Boolean,
+});
+
+const emit = defineEmits();
+
+const changeValue = () => {
+  emit("update");
+  isCurrentLanguage.value = !isCurrentLanguage.value;
 };
 
-const toggleActiveLanguage = () => {
-  isActiveLanguage.value = !isActiveLanguage.value;
+const toggleBurger = () => {
+  isOpenBurger.value = !isOpenBurger.value;
 };
 
 const selectedLanguage = (value, id, icon) => {
@@ -137,6 +155,10 @@ watch(currentLanguage, async () => {
     const response = await getTranslations();
     if (response) {
       translate.value = response;
+      all_languages.value = response;
+      isTranslationsAvailable.value = true;
+    } else {
+      isTranslationsAvailable.value = false;
     }
   }
 });
@@ -153,7 +175,7 @@ onMounted(() => {
 const languages = [
   { id: 1, value: "Eng", key: "en", icon: "/_nuxt/assets/engIcon.png" },
   { id: 2, value: "Rus", key: "ru", icon: "/_nuxt/assets/rusFlag.png" },
-  { id: 3, value: "Uzb", key: "uz", icon: "/_nuxt/assets/uzbIcon.png" },
+  { id: 3, value: "Ger", key: "ge", icon: "/_nuxt/assets/iconGer.png" },
 ];
 </script>
 

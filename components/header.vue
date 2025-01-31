@@ -15,12 +15,11 @@
       <div class="title">
         <h1>{{ bannerTitle }}</h1>
         <p>
-          Молодое и динамично развивающееся предприятие специализируется на
-          производстве алюминиевых профилей различных типов и размеров.
+          {{ heroDescription["section.description"] }}
         </p>
 
         <button>
-          Обратный связь
+          {{ heroDescription["section.feedback"] }}
           <span></span>
           <i class="fa-solid fa-arrow-right"></i>
         </button>
@@ -30,10 +29,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useBanner } from "../services/banner/banner-service";
+import { useTranslations } from "~/services/translations/translations-service";
 
 const { getBanner } = useBanner();
+const { getTranslations } = useTranslations();
+const heroDescription = ref({});
 const bannerTitle = ref("");
 const bannerImage = ref("");
 
@@ -47,12 +49,37 @@ const { data: banner } = await useAsyncData("banner", async () => {
   return response.results;
 });
 
+const { data: description } = await useAsyncData("description", async () => {
+  const response = await getTranslations();
+  heroDescription.value = response;
+
+  if (!response || !response.results || response.results.length === 0) {
+    return null;
+  }
+
+  return response;
+});
+
 onMounted(() => {
   if (banner.value && banner.value.length > 0) {
     bannerTitle.value = banner.value[0].title;
     bannerImage.value = banner.value[0].image;
   }
 });
+
+const props = defineProps({
+  propVal: Boolean,
+});
+
+const emit = defineEmits();
+
+watch(
+  () => props.propVal,
+  async (newVal) => {
+    const translations = await getTranslations();
+    heroDescription.value = translations;
+  }
+);
 </script>
 
 <style lang="scss" scoped>
@@ -275,7 +302,7 @@ onMounted(() => {
     .header-title {
       .title {
         bottom: 15%;
-        
+
         h1 {
           font-size: 26px;
         }

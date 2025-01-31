@@ -1,19 +1,22 @@
 <template>
   <footer id="footer">
     <div class="footer-form">
-      <h1>Мы готовы ответить на все вопросы</h1>
+      <h1>{{ footerTranslation["footer.form-title"] }}</h1>
       <form action="">
         <div class="input-form">
-          <input required type="text" placeholder="Имя" />
+          <input
+            required
+            type="text"
+            :placeholder="footerTranslation['footer.name']"
+          />
           <input required type="number" placeholder="+998" />
         </div>
         <div class="submit-form">
           <p>
-            Отправляя эту форму, я подтверждаю, что прочитал и принимаю Политику
-            конфиденциальности.
+            {{ footerTranslation["footer.oferta"] }}
           </p>
           <button type="submit">
-            Обратный связь
+            {{ footerTranslation["section.feedback"] }}
             <span></span>
             <i class="fa-solid fa-arrow-right"></i>
           </button>
@@ -23,12 +26,12 @@
 
     <div class="our-contact">
       <div>
-        <h2>49 0 173 277 34 79</h2>
-        <p>Mijozlarga xizmat ko'rsatish telefon raqami</p>
+        <h2>{{ footerTranslation["footer.phone"] }}</h2>
+        <p>{{ footerTranslation["footer.phone-text"] }}</p>
       </div>
       <div>
-        <h2>info@b-tex.info</h2>
-        <p>Barcha savollaringizni elektron pochtamizga yo‘llashingiz mumkin</p>
+        <h2>{{ footerTranslation["footer.gmail"] }}</h2>
+        <p>{{ footerTranslation["footer.gmail-text"] }}</p>
       </div>
       <div class="our-network">
         <i class="fa-brands fa-square-instagram"></i>
@@ -38,40 +41,69 @@
   </footer>
   <div class="more-contact">
     <ul class="about-us">
-      <li class="title">About us</li>
+      <li class="title">{{ footerTranslation["footer.about-us"] }}</li>
       <li class="bold-title">
-        Надежность и точность в каждом движении станка 
+        {{ footerTranslation["footer.about-tile"] }}
       </li>
       <li>
-        Доверьтесь нам в выборе оборудования для вашего бизнеса — мы обеспечим
-        вам безупречную работу и высокую производительность на каждом этапе
-        производства.
+        {{ footerTranslation["footer.about-des"] }}
       </li>
     </ul>
 
     <ul class="shop-service">
-      <li class="title">Shop services</li>
-      <li>Фасадные профили</li>
-      <li>Террасные доски и покрытия</li>
-      <li>Экструзионное оборудование</li>
-      <li>Металлообрабатывающее оборудование</li>
-      <li>Запасные части и комплектующие</li>
+      <li class="title">{{ footerTranslation["footer.shop-text"] }}</li>
+      <li>{{ footerTranslation["footer.facade-profiles"] }}</li>
+      <li>{{ footerTranslation["footer.teracce"] }}</li>
+      <li>{{ footerTranslation["footer.extrusion"] }}</li>
+      <li>{{ footerTranslation["footer.metallworking"] }}</li>
+      <li>{{ footerTranslation["footer.components"] }}</li>
     </ul>
 
     <ul class="address">
-      <li class="title">Address</li>
-      <li class="bold-title">Фишелн 50, 41366 Швальмталь, Германия</li>
-      <li class="bold-title">49 0 173 277 34 79</li>
-      <li>Mo-Fr, 09:00 - 16:00 Uhr</li>
+      <li class="title">{{ footerTranslation["footer.adress-title"] }}</li>
+      <li class="bold-title">{{ footerTranslation["footer.adress"] }}</li>
+      <li class="bold-title">{{ footerTranslation["footer.phone"] }}</li>
+      <li>{{ footerTranslation["footer.work-time"] }}</li>
     </ul>
   </div>
 
   <div class="footer-section">
-    <p>Авторское право © 2025. Все права защищены.</p>
+    <p>{{ footerTranslation["footer.copyright"] }}</p>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, watch } from "vue";
+import { useTranslations } from "~/services/translations/translations-service";
+
+const { getTranslations } = useTranslations();
+const footerTranslation = ref({});
+
+const { data: description } = await useAsyncData("description", async () => {
+  const response = await getTranslations();
+  footerTranslation.value = response;
+
+  if (!response || !response.results || response.results.length === 0) {
+    return null;
+  }
+
+  return response;
+});
+
+const props = defineProps({
+  propVal: Boolean,
+});
+
+const emit = defineEmits();
+
+watch(
+  () => props.propVal,
+  async (newVal) => {
+    const translations = await getTranslations();
+    footerTranslation.value = translations;
+  }
+);
+</script>
 
 <style lang="scss" scoped>
 footer {
@@ -79,7 +111,7 @@ footer {
   padding: 0px 260px;
 
   .footer-form {
-    padding: 44px 140px;
+    padding: 44px 100px;
     width: 100%;
 
     h1 {
@@ -147,7 +179,7 @@ footer {
 
   .our-contact {
     width: 100%;
-    padding: 44px 140px;
+    padding: 44px 100px;
     display: flex;
     gap: 25px;
     justify-content: space-between;

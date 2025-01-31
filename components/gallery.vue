@@ -1,6 +1,6 @@
 <template>
   <div id="gallery" class="gallery">
-    <h1>Наш галерея</h1>
+    <h1>{{ galleryTranslation["gallery.title"] }}</h1>
     <div class="carousel">
       <img class="top-ellipse" src="/assets/Ellipse.png" alt="" />
       <img class="bottom-ellipse" src="/assets/Ellipse.png" alt="" />
@@ -21,8 +21,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, watch } from "vue";
+import { useTranslations } from "~/services/translations/translations-service";
 import { useMedia } from "~/services/media/media-service";
+
+const { getTranslations } = useTranslations();
 
 const { getMedia } = useMedia();
 
@@ -35,6 +38,34 @@ const { data: media } = await useAsyncData("media", async () => {
 
   return response.results.flatMap((item) => item);
 });
+
+const galleryTranslation = ref({});
+
+const { data: description } = await useAsyncData("description", async () => {
+  const response = await getTranslations();
+  console.log(response);
+  galleryTranslation.value = response;
+
+  if (!response || !response.results || response.results.length === 0) {
+    return null;
+  }
+
+  return response;
+});
+
+const props = defineProps({
+  propVal: Boolean,
+});
+
+const emit = defineEmits();
+
+watch(
+  () => props.propVal,
+  async (newVal) => {
+    const translations = await getTranslations();
+    galleryTranslation.value = translations;
+  }
+);
 
 const scrollContainer = ref(null);
 const imgWidth = ref(580);

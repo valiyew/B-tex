@@ -1,6 +1,6 @@
 <template>
   <div id="product" class="product">
-    <h1>Product</h1>
+    <h1>{{ productTranslation["product.title"] }}</h1>
     <div class="categories">
       <button
         v-for="(item, index) in categories"
@@ -25,7 +25,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
+import { useTranslations } from "~/services/translations/translations-service";
 import { useProduct } from "../services/product/product-service";
 
 const { getProduct } = useProduct();
@@ -33,6 +34,34 @@ const { getProduct } = useProduct();
 const productsList = ref([]);
 const categories = ref([]);
 const isActive = ref(null);
+
+const { getTranslations } = useTranslations();
+const productTranslation = ref({});
+
+const { data: description } = await useAsyncData("description", async () => {
+  const response = await getTranslations();
+  productTranslation.value = response;
+
+  if (!response || !response.results || response.results.length === 0) {
+    return null;
+  }
+
+  return response;
+});
+
+const props = defineProps({
+  propVal: Boolean,
+});
+
+const emit = defineEmits();
+
+watch(
+  () => props.propVal,
+  async (newVal) => {
+    const translations = await getTranslations();
+    productTranslation.value = translations;
+  }
+);
 
 onMounted(async () => {
   const response = await getProduct();

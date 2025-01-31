@@ -1,6 +1,6 @@
 <template>
   <div class="produce">
-    <h1>Мы производим</h1>
+    <h1>{{ ourProduceTranslation["produce.title"] }}</h1>
     <div class="produce-box">
       <div
         v-for="(item, index) in categories.results"
@@ -27,12 +27,43 @@
 </template>
 
 <script setup>
+import { ref, watch } from "vue";
+import { useTranslations } from "~/services/translations/translations-service";
 import { useCategories } from "../services/categories/category-service";
 
 const { getCategories } = useCategories();
 
 const { data: categories } = await useAsyncData("categories", () =>
   getCategories()
+);
+
+const { getTranslations } = useTranslations();
+
+const ourProduceTranslation = ref({});
+
+const { data: description } = await useAsyncData("description", async () => {
+  const response = await getTranslations();
+  ourProduceTranslation.value = response;
+
+  if (!response || !response.results || response.results.length === 0) {
+    return null;
+  }
+
+  return response;
+});
+
+const props = defineProps({
+  propVal: Boolean,
+});
+
+const emit = defineEmits();
+
+watch(
+  () => props.propVal,
+  async (newVal) => {
+    const translations = await getTranslations();
+    ourProduceTranslation.value = translations;
+  }
 );
 </script>
 
@@ -91,8 +122,7 @@ const { data: categories } = await useAsyncData("categories", () =>
 
       img {
         width: 40%;
-        height: auto;
-        object-fit: cover;
+        height: 100%;
       }
     }
   }

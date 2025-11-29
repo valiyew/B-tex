@@ -2,23 +2,15 @@
   <div id="product" class="product">
     <h1>{{ productTranslation["product.title"] }}</h1>
     <div class="categories">
-      <button
-        v-for="(item, index) in categories"
-        :key="index"
-        @click="isActiveToggle(item.id)"
-        :class="{ active: isActive === item.id }"
-      >
-        {{ item.title }}
+      <button v-for="(item, index) in visibleCategories" :key="item.id" @click="isActiveToggle(item.id)" :class="{ active: isActive === item.id }">
+        {{ item?.title }}
       </button>
     </div>
+    <div class="global_desc" v-html="globalDescription"></div>
     <div class="product-box">
-      <div
-        v-for="(item, index) in filteredProducts"
-        :key="index"
-        class="product-item"
-      >
-        <img :src="item.image" alt="Product Image" />
-        <p>{{ item.description }}</p>
+      <div v-for="(item, index) in filteredProducts" :key="index" class="product-item">
+        <img v-if="item?.image" :src="item?.image" alt="Product Image" />
+        <div v-if="item?.description" v-html="item?.description"></div>
       </div>
     </div>
   </div>
@@ -34,6 +26,7 @@ const { getProduct } = useProduct();
 const productsList = ref([]);
 const categories = ref([]);
 const isActive = ref(null);
+const globalDescription = ref("");
 
 const { getTranslations } = useTranslations();
 const productTranslation = ref({});
@@ -51,6 +44,11 @@ const { data: description } = await useAsyncData("description", async () => {
 
 const props = defineProps({
   propVal: Boolean,
+  // Qaysi kategoriyalarni ko'rsatishni belgilash uchun prop qo'shing
+  showFirstFive: {
+    type: Boolean,
+    default: true, // default birinchi 5ta ko'rsatadi
+  },
 });
 
 const emit = defineEmits();
@@ -62,6 +60,14 @@ watch(
     productTranslation.value = translations;
   }
 );
+
+// Ko'rsatiladigan kategoriyalar
+const visibleCategories = computed(() => {
+  if (!categories.value?.length) return [];
+
+  // Agar showFirstFive true bo'lsa, birinchi 5ta, aks holda 5-indexdan keyingilar
+  return props.showFirstFive ? categories.value.slice(0, 5) : categories.value.slice(5);
+});
 
 onMounted(async () => {
   const response = await getProduct();
@@ -75,14 +81,17 @@ onMounted(async () => {
       }))
     );
 
-    isActive.value = categories.value[0]?.id || null;
+    // Ko'rsatiladigan birinchi kategoriyani active qilish
+    isActive.value = visibleCategories.value[0]?.id || null;
+
+    console.log("catalog: => ", categories.value);
+    console.log("visible categories: => ", visibleCategories.value);
+    globalDescription.value = visibleCategories.value[0]?.description || "";
   }
 });
 
 const filteredProducts = computed(() => {
-  return productsList.value.filter(
-    (product) => product.category === isActive.value
-  );
+  return productsList.value.filter((product) => product.category === isActive.value);
 });
 
 const isActiveToggle = (id) => {
@@ -142,6 +151,15 @@ const isActiveToggle = (id) => {
     }
   }
 
+  .global_desc {
+    margin-top: 40px;
+    color: #363636;
+    font-family: "Nekst", sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+  }
+
   .product-box {
     margin-top: 50px;
     width: 100%;
@@ -160,10 +178,10 @@ const isActiveToggle = (id) => {
         margin-bottom: 20px;
       }
 
-      p {
+      div {
         color: var(--black);
         font-family: "Nekst", sans-serif;
-        font-size: 20px;
+        font-size: 16px;
         font-style: normal;
         font-weight: 500;
         text-transform: uppercase;

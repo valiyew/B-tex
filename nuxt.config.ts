@@ -7,7 +7,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      BaseUrl: process.env.PUBLIC_BASE_URL,
+      BaseUrl: process.env.PUBLIC_BASE_URL || "https://admin.b-tex.info",
     },
   },
 });

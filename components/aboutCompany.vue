@@ -18,13 +18,16 @@
         </p>
       </div>
     </div>
-    <img src="/assets/aboutCompanyImg.png" alt="" />
+    <img v-if="route.path === '/'" src="/assets/aboutCompanyImg.png" alt="" />
   </div>
 </template>
 
 <script setup>
 import { ref, watch } from "vue";
+import { useRoute } from "vue-router";
+
 import { useTranslations } from "~/services/translations/translations-service";
+const route = useRoute();
 
 const { getTranslations } = useTranslations();
 const aboutCompanyTranslations = ref({});

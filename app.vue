@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <Page />
-  </div>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
+
 
 <script setup>
 import "./assets/main.css";
-import { Page } from "./page/index.ts";
 </script>
 
 <style lang="scss" scoped></style>

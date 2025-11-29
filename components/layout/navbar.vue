@@ -1,7 +1,9 @@
 <template>
   <nav>
     <div class="logo">
-      <img src="/assets/navbarLogo.png" alt="" />
+      <NuxtLink to="/">
+        <img src="/assets/navbarLogo.png" alt="" />
+      </NuxtLink>
       <span>|</span>
       <div class="mains">
         <ul>
@@ -17,6 +19,9 @@
           <a href="#gallery" v-if="isTranslationsAvailable">
             <li>{{ all_languages["navbar.gallery"] }}</li>
           </a>
+          <NuxtLink to="/products" v-if="isTranslationsAvailable">
+            <li>{{ all_languages["navbar.app"] }}</li>
+          </NuxtLink>
           <a href="#footer" v-if="isTranslationsAvailable">
             <li>{{ all_languages["navbar.contact"] }}</li>
           </a>
@@ -34,15 +39,8 @@
         </div>
 
         <div v-if="isCurrentLanguage" class="language-items">
-          <div
-            v-for="item in languages"
-            @click="selectedLanguage(item.value, item.id, item.icon)"
-          >
-            <img
-              v-if="currentLanguage.id !== item.id"
-              :src="item.icon"
-              alt=""
-            />
+          <div v-for="item in languages" @click="selectedLanguage(item.value, item.id, item.icon)">
+            <img v-if="currentLanguage.id !== item.id" :src="item.icon" alt="" />
             <p v-if="currentLanguage.id !== item.id">{{ item.value }}</p>
           </div>
         </div>
@@ -55,8 +53,9 @@
   <Transition>
     <div v-if="isOpenBurger" class="main-burger">
       <i @click="toggleBurger" class="fa-solid fa-xmark close"></i>
-      <img src="/assets/navbarLogo.png" alt="" />
-
+      <NuxtLink to="/">
+        <img src="/assets/navbarLogo.png" alt="" />
+      </NuxtLink>
       <div class="burger-mains">
         <ul>
           <a href="#header">
@@ -71,6 +70,9 @@
           <a href="#gallery">
             <li>{{ all_languages["navbar.gallery"] }}</li>
           </a>
+          <NuxtLink to="/products" v-if="isTranslationsAvailable">
+            <li>{{ all_languages["navbar.app"] }}</li>
+          </NuxtLink>
           <a href="#footer">
             <li>{{ all_languages["navbar.contact"] }}</li>
           </a>
@@ -85,15 +87,8 @@
             </div>
 
             <div v-if="isCurrentLanguage" class="language-items">
-              <div
-                v-for="item in languages"
-                @click="selectedLanguage(item.value, item.id, item.icon)"
-              >
-                <img
-                  v-if="currentLanguage.id !== item.id"
-                  :src="item.icon"
-                  alt=""
-                />
+              <div v-for="item in languages" @click="selectedLanguage(item.value, item.id, item.icon)">
+                <img v-if="currentLanguage.id !== item.id" :src="item.icon" alt="" />
                 <p v-if="currentLanguage.id !== item.id">{{ item.value }}</p>
               </div>
             </div>
@@ -142,10 +137,7 @@ const selectedLanguage = (value, id, icon) => {
   currentLanguage.value = { value, id, icon };
 
   if (process.client) {
-    localStorage.setItem(
-      "current-language",
-      JSON.stringify(currentLanguage.value)
-    );
+    localStorage.setItem("current-language", JSON.stringify(currentLanguage.value));
     localStorage.setItem("get-language", value.toLocaleLowerCase().slice(0, 2));
   }
 };

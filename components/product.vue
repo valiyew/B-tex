@@ -1,12 +1,28 @@
 <template>
   <div id="product" class="product">
     <h1>{{ productTranslation["product.title"] }}</h1>
+
+    <!-- Parent kategoriyalar -->
     <div class="categories">
-      <button v-for="(item, index) in visibleCategories" :key="item.id" @click="isActiveToggle(item.id)" :class="{ active: isActive === item.id }">
+      <button
+        v-for="(item, index) in parentCategories"
+        :key="item.id"
+        @click="selectParentCategory(item.id)"
+        :class="{ active: selectedParent === item.id }"
+      >
         {{ item?.title }}
       </button>
     </div>
+
+    <!-- Child kategoriyalar (agar mavjud bo'lsa) -->
+    <div v-if="childCategories.length > 0" class="categories child-categories">
+      <button v-for="(item, index) in childCategories" :key="item.id" @click="selectChildCategory(item.id)" :class="{ active: isActive === item.id }">
+        {{ item?.title }}
+      </button>
+    </div>
+
     <div v-if="route.path === '/products'" class="global_desc" v-html="globalDescription"></div>
+
     <div class="product-box">
       <div v-for="(item, index) in filteredProducts" :key="index" class="product-item">
         <img v-if="item?.image" :src="item?.image" alt="Product Image" />
@@ -27,6 +43,7 @@ const route = useRoute();
 const productsList = ref([]);
 const categories = ref([]);
 const isActive = ref(null);
+const selectedParent = ref(null);
 const globalDescription = ref("");
 
 const { getTranslations } = useTranslations();
@@ -45,7 +62,6 @@ const { data: description } = await useAsyncData("description", async () => {
 
 const props = defineProps({
   propVal: Boolean,
-  // page true bo'lsa - true page ko'rsatadi, false bo'lsa - false page ko'rsatadi
   page: {
     type: Boolean,
     default: true,
@@ -62,13 +78,47 @@ watch(
   }
 );
 
-// page propertyga qarab kategoriyalarni filtrlash
+// Props.page ga mos kategoriyalarni filtrlash
 const visibleCategories = computed(() => {
   if (!categories.value?.length) return [];
-
-  // props.page qiymatiga mos kategoriyalarni qaytarish
   return categories.value.filter((item) => item.page === props.page);
 });
+
+// Parent kategoriyalar (parent === null)
+const parentCategories = computed(() => {
+  return visibleCategories.value.filter((item) => item.parent === null);
+});
+
+// Child kategoriyalar (selectedParent ga mos)
+const childCategories = computed(() => {
+  if (!selectedParent.value) return [];
+  return visibleCategories.value.filter((item) => item.parent === selectedParent.value);
+});
+
+// Parent kategoriya tanlash
+const selectParentCategory = (parentId) => {
+  selectedParent.value = parentId;
+
+  const children = visibleCategories.value.filter((item) => item.parent === parentId);
+
+  if (children.length > 0) {
+    // Agar child lar bo'lsa, birinchi child ni active qilish
+    isActive.value = children[0].id;
+    globalDescription.value = children[0]?.description || "";
+  } else {
+    // Agar child yo'q bo'lsa, parent ni o'zi active
+    isActive.value = parentId;
+    const parentCat = visibleCategories.value.find((item) => item.id === parentId);
+    globalDescription.value = parentCat?.description || "";
+  }
+};
+
+// Child kategoriya tanlash
+const selectChildCategory = (childId) => {
+  isActive.value = childId;
+  const childCat = visibleCategories.value.find((item) => item.id === childId);
+  globalDescription.value = childCat?.description || "";
+};
 
 onMounted(async () => {
   const response = await getProduct();
@@ -82,20 +132,16 @@ onMounted(async () => {
       }))
     );
 
-    // Ko'rsatiladigan birinchi kategoriyani active qilish
-    isActive.value = visibleCategories.value[0]?.id || null;
-
-    globalDescription.value = visibleCategories.value[0]?.description || "";
+    // Birinchi parent kategoriyani tanlash
+    if (parentCategories.value.length > 0) {
+      selectParentCategory(parentCategories.value[0].id);
+    }
   }
 });
 
 const filteredProducts = computed(() => {
   return productsList.value.filter((product) => product.category === isActive.value);
 });
-
-const isActiveToggle = (id) => {
-  isActive.value = id;
-};
 </script>
 
 <style lang="scss" scoped>
@@ -147,6 +193,15 @@ const isActiveToggle = (id) => {
         border: 2px solid var(--primary);
         color: var(--primary);
       }
+    }
+  }
+
+  .child-categories {
+    margin-top: 16px;
+
+    button {
+      background: #f8f8f8;
+      font-size: 16px;
     }
   }
 

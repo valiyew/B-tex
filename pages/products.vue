@@ -3,7 +3,7 @@
     <Navbar :propVal="propVal" @update="updateValue" />
     <Header :propVal="propVal" @update="updateValue" />
     <AboutCompany :propVal="propVal" @update="updateValue" />
-    <Product :propVal="propVal" @update="updateValue" :showFirstFive="true" />
+    <Product :propVal="propVal" @update="updateValue" :page="true" />
 
     <div class="bg">
       <Footer :propVal="propVal" @update="updateValue" />

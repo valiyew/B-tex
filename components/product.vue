@@ -6,7 +6,7 @@
         {{ item?.title }}
       </button>
     </div>
-    <div class="global_desc" v-html="globalDescription"></div>
+    <div v-if="route.path === '/products'" class="global_desc" v-html="globalDescription"></div>
     <div class="product-box">
       <div v-for="(item, index) in filteredProducts" :key="index" class="product-item">
         <img v-if="item?.image" :src="item?.image" alt="Product Image" />
@@ -22,6 +22,7 @@ import { useTranslations } from "~/services/translations/translations-service";
 import { useProduct } from "../services/product/product-service";
 
 const { getProduct } = useProduct();
+const route = useRoute();
 
 const productsList = ref([]);
 const categories = ref([]);
@@ -44,10 +45,10 @@ const { data: description } = await useAsyncData("description", async () => {
 
 const props = defineProps({
   propVal: Boolean,
-  // Qaysi kategoriyalarni ko'rsatishni belgilash uchun prop qo'shing
-  showFirstFive: {
+  // page true bo'lsa - true page ko'rsatadi, false bo'lsa - false page ko'rsatadi
+  page: {
     type: Boolean,
-    default: true, // default birinchi 5ta ko'rsatadi
+    default: true,
   },
 });
 
@@ -61,12 +62,12 @@ watch(
   }
 );
 
-// Ko'rsatiladigan kategoriyalar
+// page propertyga qarab kategoriyalarni filtrlash
 const visibleCategories = computed(() => {
   if (!categories.value?.length) return [];
 
-  // Agar showFirstFive true bo'lsa, birinchi 5ta, aks holda 5-indexdan keyingilar
-  return props.showFirstFive ? categories.value.slice(0, 5) : categories.value.slice(5);
+  // props.page qiymatiga mos kategoriyalarni qaytarish
+  return categories.value.filter((item) => item.page === props.page);
 });
 
 onMounted(async () => {
@@ -84,8 +85,6 @@ onMounted(async () => {
     // Ko'rsatiladigan birinchi kategoriyani active qilish
     isActive.value = visibleCategories.value[0]?.id || null;
 
-    console.log("catalog: => ", categories.value);
-    console.log("visible categories: => ", visibleCategories.value);
     globalDescription.value = visibleCategories.value[0]?.description || "";
   }
 });

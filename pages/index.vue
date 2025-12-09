@@ -6,8 +6,7 @@
 
     <div class="bg">
       <WeProduce :propVal="propVal" @update="updateValue" />
-      <Product :propVal="propVal" @update="updateValue" :showFirstFive="false" />
-
+      <Product :propVal="propVal" @update="updateValue" :page="false" />
     </div>
 
     <Sliders :propVal="propVal" @update="updateValue" />

@@ -43,7 +43,6 @@ const galleryTranslation = ref({});
 
 const { data: description } = await useAsyncData("description", async () => {
   const response = await getTranslations();
-  console.log(response);
   galleryTranslation.value = response;
 
   if (!response || !response.results || response.results.length === 0) {

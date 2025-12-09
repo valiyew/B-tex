@@ -7,23 +7,23 @@
       <span>|</span>
       <div class="mains">
         <ul>
-          <a href="#header" v-if="isTranslationsAvailable">
-            <li>{{ all_languages["navbar.home"] }}</li>
+          <a href="#header">
+            <li>{{ all_languages?.["navbar.home"] || "Home" }}</li>
           </a>
-          <a href="#about" v-if="isTranslationsAvailable">
-            <li>{{ all_languages["navbar.about"] }}</li>
+          <a href="#about">
+            <li>{{ all_languages?.["navbar.about"] || "About" }}</li>
           </a>
-          <a href="#product" v-if="isTranslationsAvailable">
-            <li>{{ all_languages["navbar.product"] }}</li>
+          <a href="#product">
+            <li>{{ all_languages?.["navbar.product"] || "Product" }}</li>
           </a>
-          <a href="#gallery" v-if="isTranslationsAvailable">
-            <li>{{ all_languages["navbar.gallery"] }}</li>
+          <a href="#gallery">
+            <li>{{ all_languages?.["navbar.gallery"] || "Gallery" }}</li>
           </a>
-          <NuxtLink to="/products" v-if="isTranslationsAvailable">
-            <li>{{ all_languages["navbar.app"] }}</li>
+          <NuxtLink to="/products">
+            <li>{{ all_languages?.["navbar.app"] || "Application" }}</li>
           </NuxtLink>
-          <a href="#footer" v-if="isTranslationsAvailable">
-            <li>{{ all_languages["navbar.contact"] }}</li>
+          <a href="#footer">
+            <li>{{ all_languages?.["navbar.contact"] || "Contact" }}</li>
           </a>
         </ul>
       </div>
@@ -39,7 +39,7 @@
         </div>
 
         <div v-if="isCurrentLanguage" class="language-items">
-          <div v-for="item in languages" @click="selectedLanguage(item.value, item.id, item.icon)">
+          <div v-for="item in languages" :key="item.id" @click="selectedLanguage(item.value, item.id, item.icon)">
             <img v-if="currentLanguage.id !== item.id" :src="item.icon" alt="" />
             <p v-if="currentLanguage.id !== item.id">{{ item.value }}</p>
           </div>
@@ -58,23 +58,23 @@
       </NuxtLink>
       <div class="burger-mains">
         <ul>
-          <a href="#header">
-            <li>{{ all_languages["navbar.home"] }}</li>
+          <a href="#header" @click="toggleBurger">
+            <li>{{ all_languages?.["navbar.home"] || "Home" }}</li>
           </a>
-          <a href="#about">
-            <li>{{ all_languages["navbar.about"] }}</li>
+          <a href="#about" @click="toggleBurger">
+            <li>{{ all_languages?.["navbar.about"] || "About" }}</li>
           </a>
-          <a href="#product">
-            <li>{{ all_languages["navbar.product"] }}</li>
+          <a href="#product" @click="toggleBurger">
+            <li>{{ all_languages?.["navbar.product"] || "Product" }}</li>
           </a>
-          <a href="#gallery">
-            <li>{{ all_languages["navbar.gallery"] }}</li>
+          <a href="#gallery" @click="toggleBurger">
+            <li>{{ all_languages?.["navbar.gallery"] || "Gallery" }}</li>
           </a>
-          <NuxtLink to="/products" v-if="isTranslationsAvailable">
-            <li>{{ all_languages["navbar.app"] }}</li>
+          <NuxtLink to="/products" @click="toggleBurger">
+            <li>{{ all_languages?.["navbar.app"] || "Application" }}</li>
           </NuxtLink>
-          <a href="#footer">
-            <li>{{ all_languages["navbar.contact"] }}</li>
+          <a href="#footer" @click="toggleBurger">
+            <li>{{ all_languages?.["navbar.contact"] || "Contact" }}</li>
           </a>
         </ul>
         <div @click="changeValue" class="languages">
@@ -87,7 +87,7 @@
             </div>
 
             <div v-if="isCurrentLanguage" class="language-items">
-              <div v-for="item in languages" @click="selectedLanguage(item.value, item.id, item.icon)">
+              <div v-for="item in languages" :key="item.id" @click="selectedLanguage(item.value, item.id, item.icon)">
                 <img v-if="currentLanguage.id !== item.id" :src="item.icon" alt="" />
                 <p v-if="currentLanguage.id !== item.id">{{ item.value }}</p>
               </div>
@@ -95,7 +95,7 @@
           </div>
         </div>
 
-        <h3>{{ all_languages["navbar.telNumber"] }}</h3>
+        <h3>{{ all_languages?.["navbar.telNumber"] || "+998 XX XXX XX XX" }}</h3>
       </div>
     </div>
   </Transition>
@@ -109,8 +109,7 @@ const { getTranslations } = useTranslations();
 const isOpenBurger = ref(false);
 const translate = ref(null);
 const isCurrentLanguage = ref(false);
-const all_languages = ref();
-const isTranslationsAvailable = ref(false);
+const all_languages = ref({});
 
 const currentLanguage = ref({
   value: "Eng",
@@ -142,24 +141,28 @@ const selectedLanguage = (value, id, icon) => {
   }
 };
 
+// Initial load
+onMounted(async () => {
+  if (process.client) {
+    const savedLanguage = localStorage.getItem("current-language");
+    if (savedLanguage) {
+      currentLanguage.value = JSON.parse(savedLanguage);
+    }
+
+    // Load translations on mount
+    const response = await getTranslations();
+    if (response) {
+      all_languages.value = response;
+    }
+  }
+});
+
 watch(currentLanguage, async () => {
   if (process.client) {
     const response = await getTranslations();
     if (response) {
       translate.value = response;
       all_languages.value = response;
-      isTranslationsAvailable.value = true;
-    } else {
-      isTranslationsAvailable.value = false;
-    }
-  }
-});
-
-onMounted(() => {
-  if (process.client) {
-    const savedLanguage = localStorage.getItem("current-language");
-    if (savedLanguage) {
-      currentLanguage.value = JSON.parse(savedLanguage);
     }
   }
 });

@@ -168,9 +168,9 @@ watch(currentLanguage, async () => {
 });
 
 const languages = [
-  { id: 1, value: "Eng", key: "en", icon: "/_nuxt/assets/engIcon.png" },
-  { id: 2, value: "Rus", key: "ru", icon: "/_nuxt/assets/rusFlag.png" },
-  { id: 3, value: "Ger", key: "ge", icon: "/_nuxt/assets/iconGer.png" },
+  { id: 1, value: "Eng", key: "en", icon: "/engIcon.png" },
+  { id: 2, value: "Rus", key: "ru", icon: "/rusFlag.png" },
+  { id: 3, value: "Ger", key: "ge", icon: "/iconGer.png" },
 ];
 </script>
 

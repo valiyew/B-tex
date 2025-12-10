@@ -100,6 +100,7 @@ const selectParentCategory = (parentId) => {
   selectedParent.value = parentId;
 
   const children = visibleCategories.value.filter((item) => item.parent === parentId);
+  console.log("renn",children)
 
   if (children.length > 0) {
     // Agar child lar bo'lsa, birinchi child ni active qilish
@@ -118,6 +119,7 @@ const selectChildCategory = (childId) => {
   isActive.value = childId;
   const childCat = visibleCategories.value.find((item) => item.id === childId);
   globalDescription.value = childCat?.description || "";
+  console.log("desc",globalDescription.value)
 };
 
 onMounted(async () => {

@@ -16,7 +16,7 @@
           <a href="#product">
             <li>{{ all_languages?.["navbar.product"] || "Product" }}</li>
           </a>
-          <a href="#gallery">
+          <a v-if="route.path !== '/products'" href="#gallery">
             <li>{{ all_languages?.["navbar.gallery"] || "Gallery" }}</li>
           </a>
           <NuxtLink to="/products">
@@ -67,7 +67,7 @@
           <a href="#product" @click="toggleBurger">
             <li>{{ all_languages?.["navbar.product"] || "Product" }}</li>
           </a>
-          <a href="#gallery" @click="toggleBurger">
+          <a v-if="route.path !== '/products'" href="#gallery" @click="toggleBurger">
             <li>{{ all_languages?.["navbar.gallery"] || "Gallery" }}</li>
           </a>
           <NuxtLink to="/products" @click="toggleBurger">
@@ -110,6 +110,7 @@ const isOpenBurger = ref(false);
 const translate = ref(null);
 const isCurrentLanguage = ref(false);
 const all_languages = ref({});
+const route = useRoute();
 
 const currentLanguage = ref({
   value: "Eng",

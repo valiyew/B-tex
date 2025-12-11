@@ -1,15 +1,10 @@
 <template>
   <div id="product" class="product">
-    <h1>{{ productTranslation["product.title"] }}</h1>
+    <h1>{{ route.path === "/" ? productTranslation["product.title"] : productTranslation["main.app"] }}</h1>
 
     <!-- Parent kategoriyalar -->
     <div class="categories">
-      <button
-        v-for="(item, index) in parentCategories"
-        :key="item.id"
-        @click="selectParentCategory(item.id)"
-        :class="{ active: selectedParent === item.id }"
-      >
+      <button v-for="(item, index) in parentCategories" :key="item.id" @click="selectParentCategory(item.id)" :class="{ active: selectedParent === item.id }">
         {{ item?.title }}
       </button>
     </div>
@@ -100,7 +95,7 @@ const selectParentCategory = (parentId) => {
   selectedParent.value = parentId;
 
   const children = visibleCategories.value.filter((item) => item.parent === parentId);
-  console.log("renn",children)
+  console.log("renn", children);
 
   if (children.length > 0) {
     // Agar child lar bo'lsa, birinchi child ni active qilish
@@ -119,7 +114,7 @@ const selectChildCategory = (childId) => {
   isActive.value = childId;
   const childCat = visibleCategories.value.find((item) => item.id === childId);
   globalDescription.value = childCat?.description || "";
-  console.log("desc",globalDescription.value)
+  console.log("desc", globalDescription.value);
 };
 
 onMounted(async () => {

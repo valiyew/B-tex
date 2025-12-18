@@ -21,6 +21,7 @@
     <div class="product-box">
       <div v-for="(item, index) in filteredProducts" :key="index" class="product-item">
         <img v-if="item?.image" :src="item?.image" alt="Product Image" />
+        <div v-if="item?.title && route.path !== '/products'">{{ item?.title }}</div>
         <div v-if="item?.description" v-html="item?.description"></div>
       </div>
     </div>

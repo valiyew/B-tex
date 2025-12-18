@@ -1,9 +1,5 @@
 <template>
-  <div
-    id="header"
-    class="header"
-    :style="{ backgroundImage: `url(${bannerImage})` }"
-  >
+  <div id="header" class="header" :style="{ backgroundImage: `url(${bannerImage})` }">
     >
     <div class="overlay"></div>
     <div class="header-title">
@@ -18,11 +14,13 @@
           {{ heroDescription["section.description"] }}
         </p>
 
-        <button>
-          {{ heroDescription["section.feedback"] }}
-          <span></span>
-          <i class="fa-solid fa-arrow-right"></i>
-        </button>
+        <a href="#footer">
+          <button>
+            {{ heroDescription["section.feedback"] }}
+            <span></span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </a>
       </div>
     </div>
   </div>
@@ -102,12 +100,7 @@ watch(
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-      0deg,
-      #020105 0%,
-      rgba(2, 1, 5, 0.48) 73.98%,
-      rgba(2, 1, 5, 0) 100%
-    );
+    background: linear-gradient(0deg, #020105 0%, rgba(2, 1, 5, 0.48) 73.98%, rgba(2, 1, 5, 0) 100%);
     z-index: 1;
     opacity: 0.6;
   }

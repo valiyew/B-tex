@@ -188,7 +188,7 @@ footer {
       h2 {
         color: var(--black);
         font-family: "Prosto One", sans-serif;
-        font-size: 32px;
+        font-size: 26px;
         font-weight: 500;
         line-height: 120%;
       }

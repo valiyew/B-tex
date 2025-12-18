@@ -1,32 +1,58 @@
 <template>
   <div id="gallery" class="gallery">
     <h1>{{ galleryTranslation["gallery.title"] }}</h1>
-    <div class="carousel">
-      <img class="top-ellipse" src="/assets/Ellipse.png" alt="" />
-      <img class="bottom-ellipse" src="/assets/Ellipse.png" alt="" />
 
-      <div class="carousel-container" ref="scrollContainer">
-        <div class="carousel-item" v-for="(image, index) in media" :key="index">
-          <img :src="image.image" alt="" />
-        </div>
+    <ClientOnly>
+      <div class="carousel">
+        <img class="top-ellipse" src="/assets/Ellipse.png" alt="" />
+        <img class="bottom-ellipse" src="/assets/Ellipse.png" alt="" />
+
+        <Swiper
+          data-aos="fade-up"
+          :loop="true"
+          :modules="[Autoplay, Navigation]"
+          :autoplay="{ delay: 8000, disableOnInteraction: false }"
+          :navigation="{
+            nextEl: '.swiper-button-next-custom',
+            prevEl: '.swiper-button-prev-custom',
+          }"
+          class="carousel-swiper"
+          :breakpoints="{
+            320: { slidesPerView: 1, spaceBetween: 10 },
+            576: { slidesPerView: 1, spaceBetween: 15 },
+            768: { slidesPerView: 1.5, spaceBetween: 20 },
+            992: { slidesPerView: 2, spaceBetween: 20 },
+            1280: { slidesPerView: 2, spaceBetween: 20 },
+          }"
+        >
+          <SwiperSlide v-for="(image, index) in media" :key="index">
+            <div class="carousel-item">
+              <img :src="image.image" :alt="`Gallery image ${index + 1}`" />
+            </div>
+          </SwiperSlide>
+
+          <button class="swiper-button-prev-custom carousel-control prev">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+
+          <button class="swiper-button-next-custom carousel-control next">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </Swiper>
       </div>
-      <button @click="prev" class="carousel-control prev" ref="prevBtn">
-        <i class="fa-solid fa-chevron-left"></i>
-      </button>
-      <button @click="next" class="carousel-control next" ref="nextBtn">
-        <i class="fa-solid fa-chevron-right"></i>
-      </button>
-    </div>
+    </ClientOnly>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { Autoplay, Navigation } from "swiper/modules";
+import "swiper/css";
+import { ref, watch } from "vue";
 import { useTranslations } from "~/services/translations/translations-service";
 import { useMedia } from "~/services/media/media-service";
 
 const { getTranslations } = useTranslations();
-
 const { getMedia } = useMedia();
 
 const { data: media } = await useAsyncData("media", async () => {
@@ -65,67 +91,31 @@ watch(
     galleryTranslation.value = translations;
   }
 );
-
-const scrollContainer = ref(null);
-const imgWidth = ref(580);
-
-const updateImageWidth = () => {
-  if (window.innerWidth <= 576) {
-    imgWidth.value = 570;
-  } else if (window.innerWidth <= 776) {
-    imgWidth.value = 780;
-  } else if (window.innerWidth <= 992) {
-    imgWidth.value = 490;
-  } else if (window.innerWidth <= 1150) {
-    imgWidth.value = 580;
-  } else {
-    imgWidth.value = 580;
-  }
-};
-
-const next = () => {
-  if (scrollContainer.value) {
-    scrollContainer.value.scrollLeft += imgWidth.value;
-  }
-};
-
-const prev = () => {
-  if (scrollContainer.value) {
-    scrollContainer.value.scrollLeft -= imgWidth.value;
-  }
-};
-
-onMounted(() => {
-  updateImageWidth();
-  window.addEventListener("resize", updateImageWidth);
-});
 </script>
 
 <style lang="scss" scoped>
 .gallery {
-  padding: 100px 0px;
+  padding: 100px 115px 0px 115px;
   position: relative;
 
   h1 {
-    position: absolute;
-    top: 13%;
-    left: 13%;
-    text-align: center;
     color: var(--black);
     font-family: "Golos Text";
     font-size: 42px;
     font-weight: 500;
-    line-height: 120%;
   }
+
   .carousel {
-    margin-top: 180px;
     width: 100%;
+    position: relative;
 
     .top-ellipse,
     .bottom-ellipse {
       position: absolute;
       width: 100%;
+      z-index: 0;
     }
+
     .top-ellipse {
       top: 22%;
     }
@@ -134,70 +124,69 @@ onMounted(() => {
       bottom: 0%;
     }
 
-    .carousel-container {
+    .carousel-swiper {
       width: 100%;
+      margin-top: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .carousel-item {
       display: flex;
-      transition: transform 0.5s ease;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      background: linear-gradient(
-        90deg,
-        #f5f5f7 0%,
-        rgba(245, 245, 247, 0) 100%
-      );
+      justify-content: center;
+      align-items: center;
+      height: 470px;
+      transition: all 0.3s ease;
 
-      &::-webkit-scrollbar {
-        display: none;
-      }
-
-      .carousel-item {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 470px;
-        img {
-          width: 580px;
-          height: 100%;
-          object-fit: cover;
-        }
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
       }
     }
 
     .carousel-control {
       position: absolute;
-      top: 60%;
-      transform: translateY(-60%);
+      top: 50%;
+      transform: translateY(-50%);
       width: 64px;
       height: 64px;
-      padding: 8px;
-      border-radius: 50%;
+      display: flex;
       justify-content: center;
       align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
+      border-radius: 50%;
       border: 1px solid rgba(255, 255, 255, 0.8);
       background: rgba(255, 255, 255, 0.16);
       cursor: pointer;
+      z-index: 30;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
+      i {
+        color: var(--white);
+        font-size: 20px;
+      }
     }
 
     .prev {
-      left: 15%;
-      color: var(--white);
+      left: 3%;
     }
 
     .next {
-      right: 15%;
-      color: var(--white);
+      right: 3%;
     }
   }
 }
 
 @media screen and (max-width: 1550px) {
   .gallery {
-    h1 {
-      position: absolute;
-      top: 8%;
-    }
+    padding: 50px;
+
     .carousel {
       margin-top: 120px;
 
@@ -205,12 +194,8 @@ onMounted(() => {
         top: 17%;
       }
 
-      .carousel-container {
-        .carousel-item {
-          img {
-            width: 545px;
-          }
-        }
+      .carousel-item {
+        height: 420px;
       }
     }
   }
@@ -222,37 +207,13 @@ onMounted(() => {
       .top-ellipse {
         top: 20%;
       }
+
       .bottom-ellipse {
         bottom: 3%;
       }
 
-      .carousel-container {
-        .carousel-item {
-          img {
-            width: 480px;
-          }
-        }
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 1150px) {
-  .gallery {
-    .carousel {
-      .top-ellipse {
-        top: 20%;
-      }
-      .bottom-ellipse {
-        bottom: 5%;
-      }
-
-      .carousel-container {
-        .carousel-item {
-          img {
-            width: 580px;
-          }
-        }
+      .carousel-item {
+        height: 380px;
       }
     }
   }
@@ -264,36 +225,38 @@ onMounted(() => {
       .top-ellipse {
         top: 22%;
       }
+
       .bottom-ellipse {
         bottom: 7%;
       }
 
-      .carousel-container {
-        .carousel-item {
-          img {
-            width: 450px;
-          }
-        }
+      .carousel-item {
+        height: 350px;
       }
     }
   }
 }
+
 @media screen and (max-width: 992px) {
   .gallery {
+    padding: 50px 50px;
+
     .carousel {
       .top-ellipse {
         top: 25%;
       }
+
       .bottom-ellipse {
         bottom: 10%;
       }
 
-      .carousel-container {
-        .carousel-item {
-          img {
-            width: 490px;
-          }
-        }
+      .carousel-item {
+        height: 320px;
+      }
+
+      .carousel-control {
+        width: 56px;
+        height: 56px;
       }
     }
   }
@@ -302,12 +265,16 @@ onMounted(() => {
 @media screen and (max-width: 776px) {
   .gallery {
     .carousel {
-      .carousel-container {
-        .carousel-item {
-          img {
-            width: 780px;
-          }
-        }
+      .carousel-item {
+        height: 300px;
+      }
+
+      .prev {
+        left: 2%;
+      }
+
+      .next {
+        right: 2%;
       }
     }
   }
@@ -319,37 +286,46 @@ onMounted(() => {
       .top-ellipse {
         top: 25%;
       }
+
       .bottom-ellipse {
         bottom: 10%;
       }
 
-      .carousel-container {
-        .carousel-item {
-          img {
-            width: 680px;
-          }
-        }
+      .carousel-item {
+        height: 280px;
       }
     }
   }
 }
+
 @media screen and (max-width: 576px) {
   .gallery {
+    padding: 20px 30px;
+
     h1 {
       font-size: 32px;
     }
+
     .carousel {
-      .carousel-container {
-        .carousel-item {
-          img {
-            width: 570px;
-          }
-        }
+      .carousel-item {
+        height: 250px;
       }
 
       .carousel-control {
         width: 50px;
         height: 50px;
+
+        i {
+          font-size: 16px;
+        }
+      }
+
+      .prev {
+        left: 1%;
+      }
+
+      .next {
+        right: 1%;
       }
     }
   }

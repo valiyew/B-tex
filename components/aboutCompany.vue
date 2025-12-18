@@ -3,11 +3,13 @@
     <div class="company-title">
       <div class="left-box">
         <h1>{{ aboutCompanyTranslations["about-company.title"] }}</h1>
-        <button>
-          {{ aboutCompanyTranslations["section.feedback"] }}
-          <span></span>
-          <i class="fa-solid fa-arrow-right"></i>
-        </button>
+        <a href="#footer">
+          <button>
+            {{ aboutCompanyTranslations["section.feedback"] }}
+            <span></span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </a>
       </div>
       <div class="right-box">
         <h5>

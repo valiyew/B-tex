@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-01-28",
   devtools: { enabled: true },
 
-  css: ["@fortawesome/fontawesome-free/css/all.min.css"],
+  css: ["@fortawesome/fontawesome-free/css/all.min.css", "swiper/css"],
 
   runtimeConfig: {
     public: {

@@ -3,9 +3,22 @@ import type { SliderType } from "./slider-service-type";
 
 export const useSlider = () => {
   const getSlider = (params: any) => {
-    return useFetch<SliderType.IType>("api/sliders", () => {
-      method: "GET";
-      params;
+    let language = "ru";
+
+    if (process.client) {
+      const savedLanguage = localStorage.getItem("get-language");
+
+      if (savedLanguage) {
+        language = savedLanguage;
+      }
+    }
+
+    return useFetch<SliderType.IType>("api/sliders", {
+      method: "GET",
+      params,
+      headers: {
+        Language: language,
+      },
     });
   };
 

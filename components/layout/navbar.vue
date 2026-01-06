@@ -140,6 +140,8 @@ const selectedLanguage = (value, id, icon) => {
     localStorage.setItem("current-language", JSON.stringify(currentLanguage.value));
     localStorage.setItem("get-language", value.toLocaleLowerCase().slice(0, 2));
   }
+
+  window.location.reload();
 };
 
 // Initial load

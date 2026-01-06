@@ -10,7 +10,7 @@
               {{ item.title }}
             </h3>
           </div>
-          <h2 v-html="item.description"></h2>
+          <div class="desc" v-html="item.description"></div>
         </div>
         <img :src="item.image" alt="have a image" />
       </div>
@@ -106,7 +106,7 @@ watch(
           text-transform: uppercase;
         }
 
-        h2 {
+        .desc {
           margin-top: 20px;
           color: var(--black-light);
           font-family: "Golos Text", sans-serif;
@@ -247,7 +247,7 @@ watch(
           text-transform: uppercase;
         }
 
-        h2 {
+        .desc {
           margin-top: 20px;
           color: var(--black-light);
           font-family: "Golos Text", sans-serif;

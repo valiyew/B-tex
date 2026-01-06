@@ -3,7 +3,7 @@
     <h1>{{ galleryTranslation["gallery.title"] }}</h1>
 
     <ClientOnly>
-      <div class="carousel">
+      <div v-if="media && media.length > 0" class="carousel">
         <img class="top-ellipse" src="/assets/Ellipse.png" alt="" />
         <img class="bottom-ellipse" src="/assets/Ellipse.png" alt="" />
 
@@ -27,7 +27,7 @@
         >
           <SwiperSlide v-for="(image, index) in media" :key="index">
             <div class="carousel-item">
-              <img :src="image.image" :alt="`Gallery image ${index + 1}`" />
+              <img :src="image?.image" :alt="`Gallery image ${index + 1}`" />
             </div>
           </SwiperSlide>
 
@@ -40,6 +40,10 @@
           </button>
         </Swiper>
       </div>
+
+      <div v-else class="loading">
+        <p>Yuklanmoqda...</p>
+      </div>
     </ClientOnly>
   </div>
 </template>
@@ -48,47 +52,49 @@
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
-import { ref, watch } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useTranslations } from "~/services/translations/translations-service";
 import { useMedia } from "~/services/media/media-service";
 
 const { getTranslations } = useTranslations();
 const { getMedia } = useMedia();
 
-const { data: media } = await useAsyncData("media", async () => {
-  const response = await getMedia();
-
-  if (!response || !response.results || response.results.length === 0) {
-    return [];
-  }
-
-  return response.results.flatMap((item) => item);
-});
-
+const media = ref([]);
 const galleryTranslation = ref({});
-
-const { data: description } = await useAsyncData("description", async () => {
-  const response = await getTranslations();
-  galleryTranslation.value = response;
-
-  if (!response || !response.results || response.results.length === 0) {
-    return null;
-  }
-
-  return response;
-});
 
 const props = defineProps({
   propVal: Boolean,
 });
 
-const emit = defineEmits();
+// Client-side da ma'lumot yuklash
+onMounted(async () => {
+  try {
+    // Media yuklash
+    const mediaResponse = await getMedia();
+
+    if (mediaResponse?.results && mediaResponse.results.length > 0) {
+      media.value = mediaResponse.results.flatMap((item) => item);
+    }
+
+    // Translations yuklash
+    const translationsResponse = await getTranslations();
+    if (translationsResponse) {
+      galleryTranslation.value = translationsResponse;
+    }
+  } catch (error) {
+    console.error("Ma'lumot yuklashda xatolik:", error);
+  }
+});
 
 watch(
   () => props.propVal,
   async (newVal) => {
-    const translations = await getTranslations();
-    galleryTranslation.value = translations;
+    try {
+      const translations = await getTranslations();
+      galleryTranslation.value = translations;
+    } catch (error) {
+      console.error("Translations yuklashda xatolik:", error);
+    }
   }
 );
 </script>
@@ -103,6 +109,16 @@ watch(
     font-family: "Golos Text";
     font-size: 42px;
     font-weight: 500;
+  }
+
+  .loading {
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Golos Text";
+    font-size: 18px;
+    color: var(--black);
   }
 
   .carousel {
@@ -156,7 +172,7 @@ watch(
       justify-content: center;
       align-items: center;
       border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(130, 130, 130, 0.8);
       background: rgba(255, 255, 255, 0.16);
       cursor: pointer;
       z-index: 30;
@@ -168,7 +184,7 @@ watch(
       }
 
       i {
-        color: var(--white);
+        color: var(--black);
         font-size: 20px;
       }
     }

@@ -21,6 +21,15 @@ const propVal = ref(false);
 const updateValue = () => {
   propVal.value = !propVal.value;
 };
+useHead({
+  title: "B-Tex | Products",
+  meta: [
+    {
+      name: "description",
+      content: "B-Tex — yuqori sifatli tekstil mahsulotlari ishlab chiqaruvchi kompaniya.",
+    },
+  ],
+});
 </script>
 
 <style scoped>

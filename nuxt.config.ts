@@ -10,4 +10,15 @@ export default defineNuxtConfig({
       BaseUrl: process.env.PUBLIC_BASE_URL || "https://admin.b-tex.info",
     },
   },
+  app: {
+    head: {
+      link: [
+        {
+          rel: "icon",
+          type: "image/png",
+          href: "/favicon.png",
+        },
+      ],
+    },
+  },
 });
